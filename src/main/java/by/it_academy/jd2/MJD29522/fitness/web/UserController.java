@@ -1,11 +1,7 @@
 package by.it_academy.jd2.MJD29522.fitness.web;
 
-import by.it_academy.jd2.MJD29522.fitness.core.dto.UserCreateDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.UserLoginDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserRegistrationDTO;
-import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -13,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    private final IUserService service;
+    private final IPersonalAccountService service;
 
-    public UserController(IUserService service) {
+    public UserController(IPersonalAccountService service) {
         this.service = service;
     }
 

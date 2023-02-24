@@ -7,9 +7,8 @@ import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.UUID;
 
+import java.util.UUID;
 
 @Entity
 @Table(schema = "app", name = "user")
@@ -33,21 +32,12 @@ public class UserEntity {
     @Version
     private LocalDateTime dtUpdate;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name="user_mail",
-//            joinColumns= @JoinColumn(name="id"),
-//            inverseJoinColumns=   @JoinColumn(name="mail")
-//    )
-
     @Column(name = "mail")
     private String mail;
 
     @Column(name = "fio")
     private String fio;
 
-    @Column(name = "role")
-    private UserRole role;
     @Column(name = "status")
     private UserStatus status;
 
@@ -56,6 +46,16 @@ public class UserEntity {
 
     @Column(name = "code", table= "user_code")
     private int verificationCode;
+
+    @Enumerated(EnumType.STRING)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinTable(schema = "app",  name = "user_role",
+            joinColumns=
+            @JoinColumn(name="uuid"),
+            inverseJoinColumns=
+            @JoinColumn(name="role")
+    )
+    private RoleEntity roleEntity;
 
     public UserEntity() {
     }
@@ -66,11 +66,23 @@ public class UserEntity {
         this.dtUpdate = LocalDateTime.now();
         this.mail = userRegistrationDTO.getMail();
         this.fio = userRegistrationDTO.getFio();
-        this.role = UserRole.USER;
         this.status = UserStatus.WAITING_ACTIVATION;
         this.password = userRegistrationDTO.getPassword();
-        this.verificationCode =  (int)  (Math.random() * 10000);
+        this.roleEntity = getRoleEntity();
+
     }
+
+    //    public UserEntity(UserRegistrationDTO userRegistrationDTO) {
+//        this.uuid = UUID.randomUUID();
+//        this.dtCreate = LocalDateTime.now();
+//        this.dtUpdate = LocalDateTime.now();
+//        this.mail = userRegistrationDTO.getMail();
+//        this.fio = userRegistrationDTO.getFio();
+//        this.role = UserRole.USER;
+//        this.status = UserStatus.WAITING_ACTIVATION;
+//        this.password = userRegistrationDTO.getPassword();
+//        this.verificationCode =  (int)  (Math.random() * 10000);
+//    }
 
     public UserEntity(UserCreateDTO userCreateDTO) {
         this.uuid = UUID.randomUUID();
@@ -78,37 +90,80 @@ public class UserEntity {
         this.dtUpdate = LocalDateTime.now();
         this.mail = mail;
         this.fio = fio;
-        this.role = role;
+       // this.role = role;
         this.status = status;
         this.password = password;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserEntity entity = (UserEntity) o;
-        return Objects.equals(uuid, entity.uuid) && Objects.equals(dtCreate, entity.dtCreate) && Objects.equals(dtUpdate, entity.dtUpdate)
-                && Objects.equals(mail, entity.mail) && Objects.equals(fio, entity.fio) && role == entity.role && status == entity.status && Objects.equals(password, entity.password);
+    public UUID getUuid() {
+        return uuid;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(uuid, dtCreate, dtUpdate, mail, fio, role, status, password);
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "uuid=" + uuid +
-                ", dtCreate=" + dtCreate +
-                ", dtUpdate=" + dtUpdate +
-                ", mail='" + mail + '\'' +
-                ", fio='" + fio + '\'' +
-                ", role=" + role +
-                ", status=" + status +
-                ", password='" + password + '\'' +
+    public LocalDateTime getDtCreate() {
+        return dtCreate;
+    }
 
-                '}';
+    public void setDtCreate(LocalDateTime dtCreate) {
+        this.dtCreate = dtCreate;
+    }
+
+    public LocalDateTime getDtUpdate() {
+        return dtUpdate;
+    }
+
+    public void setDtUpdate(LocalDateTime dtUpdate) {
+        this.dtUpdate = dtUpdate;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getFio() {
+        return fio;
+    }
+
+    public void setFio(String fio) {
+        this.fio = fio;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(int verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public RoleEntity getRoleEntity() {
+        return roleEntity;
+    }
+
+    public void setRoleEntity(RoleEntity roleEntity) {
+        this.roleEntity = roleEntity;
     }
 }

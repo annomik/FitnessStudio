@@ -1,26 +1,19 @@
 package by.it_academy.jd2.MJD29522.fitness.service.api;
 
+import by.it_academy.jd2.MJD29522.fitness.core.dto.Page;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserCreateDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.UserLoginDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.UserRegistrationDTO;
-import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface IUserService {
 
-    List<UserEntity> gelAll();
-
-    boolean save(UserRegistrationDTO userRegistrationDTO);
+    void addNewUser(UserCreateDTO userCreateDTO);
 
     UserCreateDTO getCard(UUID uuid);
 
-    boolean verify(String verificationCode, String mail);
+    UserCreateDTO update(UUID uuid, long dtUpdate, UserCreateDTO userCreateDTO);
 
-    UserLoginDTO login(UserLoginDTO userLoginDTO);
-
-    boolean validate(UserRegistrationDTO userRegistrationDTO);
+    Page getPage(int numberOfPage, int size);
 
 
 }

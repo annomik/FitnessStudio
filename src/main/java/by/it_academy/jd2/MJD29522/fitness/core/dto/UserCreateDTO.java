@@ -2,8 +2,6 @@ package by.it_academy.jd2.MJD29522.fitness.core.dto;
 
 import by.it_academy.jd2.MJD29522.fitness.enums.UserRole;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
-
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class UserCreateDTO {

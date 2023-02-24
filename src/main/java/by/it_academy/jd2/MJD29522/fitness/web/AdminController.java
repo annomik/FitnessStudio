@@ -2,7 +2,7 @@ package by.it_academy.jd2.MJD29522.fitness.web;
 
 import by.it_academy.jd2.MJD29522.fitness.core.dto.Page;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserCreateDTO;
-import by.it_academy.jd2.MJD29522.fitness.service.api.IAdminService;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +14,9 @@ import java.util.UUID;
 @RequestMapping("/api/v1/users/")
 public class AdminController {
 
-    private final IAdminService adminService;
+    private final IUserService adminService;
 
-    public AdminController(IAdminService adminService) {
+    public AdminController(IUserService adminService) {
         this.adminService = adminService;
     }
 
