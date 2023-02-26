@@ -9,7 +9,7 @@ import java.util.UUID;
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCreateDTO {
 
-    private UUID uuid = UUID.randomUUID();
+    private UUID uuid;
 
     private Long dtCreate;
     private Long dtUpdate;
@@ -35,7 +35,7 @@ public class UserCreateDTO {
         this.password = password;
     }
 
-    public UserCreateDTO( String mail, String fio,
+    public UserCreateDTO(String mail, String fio,
                          UserRole role, UserStatus status, String password) {
         this.mail = mail;
         this.fio = fio;
@@ -50,10 +50,6 @@ public class UserCreateDTO {
 
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Long getDtCreate() {

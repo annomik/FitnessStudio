@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IPersonalAccountRepository extends CrudRepository<UserEntity, UUID> {
-    List<UserEntity> findAll();
+
     UserEntity findByMail(String mail);
 
 }

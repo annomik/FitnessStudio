@@ -5,6 +5,8 @@ import by.it_academy.jd2.MJD29522.fitness.dao.repositories.IPersonalAccountRepos
 import by.it_academy.jd2.MJD29522.fitness.service.ConversionToDTO;
 import by.it_academy.jd2.MJD29522.fitness.service.UserService;
 import by.it_academy.jd2.MJD29522.fitness.service.PersonalAccountService;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToDTO;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
 import org.springframework.context.annotation.Bean;
@@ -16,15 +18,16 @@ public class ServiceConfig {
 
     @Bean
     public IPersonalAccountService personalAccountService(IPersonalAccountRepository personalAccountRepository,
-                                                          Converter conversionToEntity,
-                                                          ConversionToDTO conversionToDTO){
+                                                          IConversionToEntity conversionToEntity,
+                                                          IConversionToDTO conversionToDTO){
         return new PersonalAccountService(personalAccountRepository, conversionToEntity, conversionToDTO);
     }
 
     @Bean
     public IUserService userService(IUserRepository userRepository,
                                     IPersonalAccountService userService,
-                                    ConversionToDTO conversionToDTO){
-        return new UserService(userRepository, userService, conversionToDTO);
+                                    IConversionToDTO conversionToDTO,
+                                    IConversionToEntity conversionToEntity){
+        return new UserService(userRepository, userService, conversionToDTO, conversionToEntity);
     }
 }

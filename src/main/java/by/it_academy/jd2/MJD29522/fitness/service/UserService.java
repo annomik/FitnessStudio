@@ -5,6 +5,8 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.UserCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.dao.repositories.IUserRepository;
 import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToDTO;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
 import org.springframework.data.domain.PageRequest;
@@ -19,18 +21,24 @@ public class UserService implements IUserService {
 
     private final IUserRepository userRepository;
     private final IPersonalAccountService personalAccountService;
-    private final ConversionToDTO conversionToDTO;
+    private final IConversionToDTO conversionToDTO;
+    private final IConversionToEntity conversionToEntity;
 
     public UserService(IUserRepository userRepository,
                        IPersonalAccountService personalAccountService,
-                       ConversionToDTO conversionToDTO) {
+                       IConversionToDTO conversionToDTO,
+                       IConversionToEntity conversionToEntity) {
         this.userRepository = userRepository;
         this.personalAccountService = personalAccountService;
         this.conversionToDTO = conversionToDTO;
+        this.conversionToEntity = conversionToEntity;
     }
 
     @Override
-    public void addNewUser(UserCreateDTO userCreateDTO) {
+    public boolean addNewUser(UserCreateDTO userCreateDTO) {
+        UserEntity entity = conversionToEntity.convertToEntity(userCreateDTO);
+        userRepository.save(entity);
+        return true;
     }
 
 

@@ -7,6 +7,7 @@ import by.it_academy.jd2.MJD29522.fitness.entity.StatusEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserRole;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToEntity;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +15,12 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Component
-public class ConversionToEntity implements Converter<UserRegistrationDTO,UserEntity>{
+public class ConversionToEntity implements IConversionToEntity
+        //Converter<UserRegistrationDTO,UserEntity>
+                {
 
     @Override
-    public UserEntity convert(UserRegistrationDTO userRegistrationDTO) {
+    public UserEntity convertToEntity(UserRegistrationDTO userRegistrationDTO) {
 
         return new UserEntity(UUID.randomUUID(),
                 LocalDateTime.now(),
@@ -31,17 +34,17 @@ public class ConversionToEntity implements Converter<UserRegistrationDTO,UserEnt
         );
     }
 
-    public UserEntity convert(UserCreateDTO userCreateDTO) {
-
+    //admin created user
+    @Override
+    public UserEntity convertToEntity(UserCreateDTO userCreateDTO) {
         return new UserEntity(UUID.randomUUID(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 userCreateDTO.getMail(),
                 userCreateDTO.getFio(),
-                new StatusEntity(UserStatus.ACTIVATED),
+                new StatusEntity(userCreateDTO.getStatus()),
                 userCreateDTO.getPassword(),
-                new RoleEntity(UserRole.USER)
+                new RoleEntity(userCreateDTO.getRole())
         );
     }
-
 }

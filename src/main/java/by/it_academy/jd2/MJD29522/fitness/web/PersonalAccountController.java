@@ -29,7 +29,7 @@ public class PersonalAccountController {
     }
 
     @RequestMapping(path = "/verification", method = RequestMethod.GET)
-    public ResponseEntity<UserRegistrationDTO> verify(@RequestParam("code") String verificationCode,
+    public ResponseEntity<UserRegistrationDTO> verify(@RequestParam("code") int verificationCode,
                                                       @RequestParam("mail") String mail) {
          service.verify(verificationCode, mail);
          return ResponseEntity.status(HttpStatus.OK).build();

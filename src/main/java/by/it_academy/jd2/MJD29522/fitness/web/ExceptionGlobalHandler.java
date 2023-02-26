@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionGlobalHandler {
 
-    @ExceptionHandler(value = {NullPointerException.class})
-    public ResponseEntity<?> handleNPE(){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-              .body(new Exception("Ошибка"));
-  }
+//    @ExceptionHandler(value = {NullPointerException.class})
+//    public ResponseEntity<?> handleNPE(){
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//              .body(new Exception("Ошибка!!!!!!!!"));
+//  }
 
 
 }

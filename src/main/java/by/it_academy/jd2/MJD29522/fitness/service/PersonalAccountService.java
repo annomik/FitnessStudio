@@ -4,49 +4,54 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserLoginDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserRegistrationDTO;
 import by.it_academy.jd2.MJD29522.fitness.dao.repositories.IPersonalAccountRepository;
+import by.it_academy.jd2.MJD29522.fitness.entity.StatusEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
+import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToDTO;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
 import org.springframework.core.convert.converter.Converter;
-
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class PersonalAccountService implements IPersonalAccountService {
 
     private final IPersonalAccountRepository personalAccountRepository;
-    private final Converter ConversionToEntity;
-    private final ConversionToDTO conversionToDTO;
+    private final  IConversionToEntity conversionToEntity;
+    private final IConversionToDTO conversionToDTO;
 
-    public PersonalAccountService(IPersonalAccountRepository personalAccountRepository, Converter ConversionToEntity,
-                                  ConversionToDTO conversionToDTO) {
+    public PersonalAccountService(IPersonalAccountRepository personalAccountRepository,
+                                  IConversionToEntity conversionToEntity,
+                                  IConversionToDTO conversionToDTO) {
         this.personalAccountRepository = personalAccountRepository;
-        this.ConversionToEntity = ConversionToEntity;
+        this.conversionToEntity = conversionToEntity;
         this.conversionToDTO = conversionToDTO;
-    }
-
-    public List<UserEntity> gelAll(){
-        return personalAccountRepository.findAll();
     }
 
     @Override
     public boolean save(UserRegistrationDTO userRegistrationDTO) {
-       UserEntity entity = (UserEntity) ConversionToEntity.convert(userRegistrationDTO);
+        UserEntity entity = conversionToEntity.convertToEntity(userRegistrationDTO);
         personalAccountRepository.save(entity);
         return true;
     }
 
     @Override
     public UserDTO getCard(UUID uuid) {
-       // UUID uuid = UUID.fromString(id);
         Optional<UserEntity> findUserEntity = personalAccountRepository.findById(uuid);
         UserEntity userEntity = findUserEntity.get();
         return conversionToDTO.convertToDTO(userEntity);
     }
 
     @Override
-    public boolean verify(String verificationCode, String mail) {
-        return true;
+    public boolean verify(int verificationCode, String mail) {
+        UserEntity userEntity = personalAccountRepository.findByMail(mail);
+        if (userEntity.getMail().equals(mail)
+                && userEntity.getVerificationCode() == verificationCode) {
+            userEntity.setStatusEntity(new StatusEntity(UserStatus.ACTIVATED));
+            System.out.println(" User verify!!!!! ");
+            return true;
+        }  System.out.println(" User  DON'T verify!!!!! ");
+        return false;
     }
 
     @Override
