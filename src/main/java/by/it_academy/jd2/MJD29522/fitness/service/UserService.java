@@ -1,42 +1,73 @@
 package by.it_academy.jd2.MJD29522.fitness.service;
 
-import by.it_academy.jd2.MJD29522.fitness.core.dto.Page;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserCreateDTO;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.dao.repositories.IUserRepository;
+import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class UserService implements IUserService {
 
     private final IUserRepository userRepository;
-    private final IPersonalAccountService authenticationService;
+    private final IPersonalAccountService personalAccountService;
+    private final ConversionToDTO conversionToDTO;
 
-    public UserService(IUserRepository userRepository, IPersonalAccountService authenticationService) {
+    public UserService(IUserRepository userRepository,
+                       IPersonalAccountService personalAccountService,
+                       ConversionToDTO conversionToDTO) {
         this.userRepository = userRepository;
-        this.authenticationService = authenticationService;
+        this.personalAccountService = personalAccountService;
+        this.conversionToDTO = conversionToDTO;
     }
 
     @Override
     public void addNewUser(UserCreateDTO userCreateDTO) {
+    }
 
+
+    @Override
+    public void update(UUID uuid, long dtUpdate, UserCreateDTO userCreateDTO) {
+     //   if (personalAccountService.getCard(uuid) != null){
+//         UserEntity userEntity = userRepository.find
+//         if (dtUpdate == user)
+//            UserDTO userFromDB = personalAccountService.getCard(uuid);
+//            if (userFromDB.getDtUpdate().equals(dtUpdate))
+//                UserCreateDTO userCreateDTO =
     }
 
     @Override
-    public UserCreateDTO getCard(UUID uuid) {
-
-        return authenticationService.getCard(uuid);
+    public UserDTO getCard(UUID uuid) {
+        return personalAccountService.getCard(uuid);
     }
 
-    @Override
-    public UserCreateDTO update(UUID uuid, long dtUpdate, UserCreateDTO userCreateDTO) {
-        return null;
-    }
 
     @Override
-    public Page getPage(int numberOfPage, int size) {
+    public PageDTO<UserDTO> getPage(int numberOfPage, int size) {
+        Pageable pageable = PageRequest.of(numberOfPage, size);
 
-        return null;
+        Page<UserEntity> allEntity = userRepository.findAll(pageable);
+        List<UserDTO> content = new ArrayList<>();
+        for (UserEntity entity: allEntity) {
+            UserDTO userDTO = conversionToDTO.convertToDTO(entity);
+            content.add(userDTO);
+        }
+
+        return new PageDTO<UserDTO>(allEntity.getNumber(),
+                allEntity.getSize(),
+                allEntity.getTotalPages(),
+                allEntity.getTotalElements(),
+                allEntity.isFirst(),
+                allEntity.getNumberOfElements(),
+                allEntity.isLast(),
+                content  );
     }
 }

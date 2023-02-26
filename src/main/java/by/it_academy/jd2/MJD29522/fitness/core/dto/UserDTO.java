@@ -2,29 +2,24 @@ package by.it_academy.jd2.MJD29522.fitness.core.dto;
 
 import by.it_academy.jd2.MJD29522.fitness.enums.UserRole;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.UUID;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
-public class UserCreateDTO {
+public class UserDTO {
 
-    private UUID uuid = UUID.randomUUID();
-
+    private UUID uuid ;
     private Long dtCreate;
     private Long dtUpdate;
     private String mail;
     private String fio;
     private UserRole role;
-    private UserStatus status;
-    private String password;
+    private UserStatus status ;
 
-    public UserCreateDTO() {
+    public UserDTO() {
     }
 
-    public UserCreateDTO(UUID uuid, Long dtCreate, Long dtUpdate,
-                         String mail, String fio, UserRole role, UserStatus status,
-                         String password ) {
+    public UserDTO(UUID uuid, Long dtCreate, Long dtUpdate,
+                   String mail, String fio, UserRole role, UserStatus status
+                 ) {
         this.uuid = uuid;
         this.dtCreate = dtCreate;
         this.dtUpdate = dtUpdate;
@@ -32,28 +27,18 @@ public class UserCreateDTO {
         this.fio = fio;
         this.role = role;
         this.status = status;
-        this.password = password;
     }
 
-    public UserCreateDTO( String mail, String fio,
-                         UserRole role, UserStatus status, String password) {
+    public UserDTO(String mail, String fio,
+                   UserRole role, UserStatus status, String password) {
         this.mail = mail;
         this.fio = fio;
         this.role = role;
         this.status = status;
-        this.password = password;
     }
 
     public UUID getUuid() {
         return uuid;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Long getDtCreate() {

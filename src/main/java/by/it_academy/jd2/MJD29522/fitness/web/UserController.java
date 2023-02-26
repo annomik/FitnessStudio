@@ -1,43 +1,52 @@
 package by.it_academy.jd2.MJD29522.fitness.web;
 
-import by.it_academy.jd2.MJD29522.fitness.core.dto.UserRegistrationDTO;
-import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.UserCreateDTO;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.UserDTO;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    private final IPersonalAccountService service;
+    private final IUserService userService;
 
-    public UserController(IPersonalAccountService service) {
-        this.service = service;
+    public UserController(IUserService userService) {
+        this.userService = userService;
     }
 
-    @RequestMapping(path = "/registration", method = RequestMethod.POST)
-    public void register(@RequestBody UserRegistrationDTO userRegistrationDTO) {
-        service.save(userRegistrationDTO);
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<?> addNewUser(@RequestBody UserCreateDTO userCreateDTO) {
+        userService.addNewUser(userCreateDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-//    @RequestMapping(path = "/verification", method = RequestMethod.GET)
-//    public ResponseEntity<UserRegistrationDTO> verify(@RequestParam("code") String verificationCode,
-//                                               @RequestParam("mail") String mail) {
-//         service.verify(verificationCode, mail);
-//         return ResponseEntity.status(HttpStatus.OK).build();
-//       }
-//
-//    @RequestMapping(path = "/login", method = RequestMethod.POST)
-//    public ResponseEntity<UserLoginDTO> login(@RequestBody UserLoginDTO userLoginDTO) {
-//        return  ResponseEntity.status(HttpStatus.OK).body(service.login(userLoginDTO));
-//    }
-//
-//    //Получить информацию о себе
-//    @RequestMapping(path = "/{me}", method = RequestMethod.GET)
-//    public ResponseEntity<UserCreateDTO> getCard(@PathVariable("me") UUID uuid){
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(service.getCard(uuid));
-//    }
+    //Получить страницу пользователей
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<PageDTO<UserDTO>> getPage(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int numberOfPage,
+            @RequestParam(name = "size", required = false, defaultValue = "20") int size){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getPage(numberOfPage, size));
+    }
 
+    //Получить информацию о пользователе
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
+    public ResponseEntity<UserDTO> getCard(@PathVariable("uuid") UUID uuid){
 
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getCard(uuid));
+    }
+
+    @RequestMapping(path = "/{uuid}/dt_update/{dt_update}", method = RequestMethod.PUT)
+    public ResponseEntity<?> update(@PathVariable("uuid") UUID uuid,
+                                    @PathVariable("dt_update") long dtUpdate,
+                                    @RequestBody UserCreateDTO userCreateDTO ) {
+        userService.update(uuid, dtUpdate, userCreateDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

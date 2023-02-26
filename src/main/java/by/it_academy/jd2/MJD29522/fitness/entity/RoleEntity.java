@@ -4,9 +4,8 @@ import by.it_academy.jd2.MJD29522.fitness.enums.UserRole;
 import jakarta.persistence.*;
 import java.util.Objects;
 
-
 @Entity
-@Table(schema = "app", name = "user_role")
+@Table(schema = "fitness", name = "role")
 public class RoleEntity {
 
     @Id
@@ -17,7 +16,7 @@ public class RoleEntity {
     }
 
     public RoleEntity(UserRole role) {
-        this.role = UserRole.USER;
+        this.role = role;
     }
 
     public UserRole getRole() {
@@ -43,4 +42,6 @@ public class RoleEntity {
     public int hashCode() {
         return Objects.hash(role);
     }
+
+
 }

@@ -1,9 +1,6 @@
 package by.it_academy.jd2.MJD29522.fitness.entity;
 
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserCreateDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.UserRegistrationDTO;
-import by.it_academy.jd2.MJD29522.fitness.enums.UserRole;
-import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
@@ -11,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "app", name = "user")
-@SecondaryTable(schema = "app", name = "user_code",
+@Table(schema = "fitness", name = "user")
+@SecondaryTable(schema = "fitness", name = "user_code",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "uuid")
 )
 public class UserEntity {
@@ -38,8 +35,15 @@ public class UserEntity {
     @Column(name = "fio")
     private String fio;
 
-    @Column(name = "status")
-    private UserStatus status;
+    @Enumerated(EnumType.STRING)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinTable(schema = "fitness", name = "user_status",
+            joinColumns=
+            @JoinColumn(name="user_uuid"),
+            inverseJoinColumns=
+            @JoinColumn(name="status_id")
+    )
+    private StatusEntity statusEntity;
 
     @Column(name = "password")
     private String password;
@@ -49,50 +53,59 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinTable(schema = "app",  name = "user_role",
+    @JoinTable(schema = "fitness", name = "user_role",
             joinColumns=
-            @JoinColumn(name="uuid"),
+            @JoinColumn(name="user_uuid"),
             inverseJoinColumns=
-            @JoinColumn(name="role")
+            @JoinColumn(name="role_id")
     )
     private RoleEntity roleEntity;
 
     public UserEntity() {
     }
 
-    public UserEntity(UserRegistrationDTO userRegistrationDTO) {
-        this.uuid = UUID.randomUUID();
-        this.dtCreate = LocalDateTime.now();
-        this.dtUpdate = LocalDateTime.now();
-        this.mail = userRegistrationDTO.getMail();
-        this.fio = userRegistrationDTO.getFio();
-        this.status = UserStatus.WAITING_ACTIVATION;
-        this.password = userRegistrationDTO.getPassword();
-        this.roleEntity = getRoleEntity();
-
-    }
-
-    //    public UserEntity(UserRegistrationDTO userRegistrationDTO) {
-//        this.uuid = UUID.randomUUID();
-//        this.dtCreate = LocalDateTime.now();
-//        this.dtUpdate = LocalDateTime.now();
-//        this.mail = userRegistrationDTO.getMail();
-//        this.fio = userRegistrationDTO.getFio();
-//        this.role = UserRole.USER;
-//        this.status = UserStatus.WAITING_ACTIVATION;
-//        this.password = userRegistrationDTO.getPassword();
-//        this.verificationCode =  (int)  (Math.random() * 10000);
-//    }
-
-    public UserEntity(UserCreateDTO userCreateDTO) {
-        this.uuid = UUID.randomUUID();
-        this.dtCreate = LocalDateTime.now();
-        this.dtUpdate = LocalDateTime.now();
+    //UserRegistrationDTO
+    public UserEntity(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate,
+                      String mail, String fio, StatusEntity statusEntity, String password,
+                      int verificationCode, RoleEntity roleEntity) {
+        this.uuid = uuid;
+        this.dtCreate = dtCreate;
+        this.dtUpdate = dtUpdate;
         this.mail = mail;
         this.fio = fio;
-       // this.role = role;
-        this.status = status;
+        this.statusEntity = statusEntity;
         this.password = password;
+        this.verificationCode = verificationCode;
+        this.roleEntity = roleEntity;
+    }
+
+    //UserDTO
+    public UserEntity(UUID uuid, LocalDateTime dtCreate,
+                      LocalDateTime dtUpdate, String mail,
+                      String fio,
+                      RoleEntity roleEntity,
+                      StatusEntity statusEntity) {
+        this.uuid = uuid;
+        this.dtCreate = dtCreate;
+        this.dtUpdate = dtUpdate;
+        this.mail = mail;
+        this.fio = fio;
+        this.roleEntity = roleEntity;
+        this.statusEntity = statusEntity;
+    }
+
+    //UserCreateDTO
+    public UserEntity(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate,
+                      String mail, String fio, StatusEntity statusEntity, String password,
+                      RoleEntity roleEntity) {
+        this.uuid = uuid;
+        this.dtCreate = dtCreate;
+        this.dtUpdate = dtUpdate;
+        this.mail = mail;
+        this.fio = fio;
+        this.statusEntity = statusEntity;
+        this.password = password;
+        this.roleEntity = roleEntity;
     }
 
     public UUID getUuid() {
@@ -135,12 +148,12 @@ public class UserEntity {
         this.fio = fio;
     }
 
-    public UserStatus getStatus() {
-        return status;
+    public StatusEntity getStatusEntity() {
+        return statusEntity;
     }
 
-    public void setStatus(UserStatus status) {
-        this.status = status;
+    public void setStatusEntity(StatusEntity statusEntity) {
+        this.statusEntity = statusEntity;
     }
 
     public String getPassword() {

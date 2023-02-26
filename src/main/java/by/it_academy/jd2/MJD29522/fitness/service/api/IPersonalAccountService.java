@@ -1,6 +1,7 @@
 package by.it_academy.jd2.MJD29522.fitness.service.api;
 
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserCreateDTO;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserLoginDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserRegistrationDTO;
 import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
@@ -14,7 +15,7 @@ public interface IPersonalAccountService {
 
     boolean save(UserRegistrationDTO userRegistrationDTO);
 
-    UserCreateDTO getCard(UUID uuid);
+    UserDTO getCard(UUID id);
 
     boolean verify(String verificationCode, String mail);
 

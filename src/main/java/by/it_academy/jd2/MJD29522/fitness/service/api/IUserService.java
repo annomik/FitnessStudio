@@ -1,7 +1,8 @@
 package by.it_academy.jd2.MJD29522.fitness.service.api;
 
-import by.it_academy.jd2.MJD29522.fitness.core.dto.Page;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.UserCreateDTO;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.UserDTO;
 
 import java.util.UUID;
 
@@ -9,11 +10,11 @@ public interface IUserService {
 
     void addNewUser(UserCreateDTO userCreateDTO);
 
-    UserCreateDTO getCard(UUID uuid);
+    UserDTO getCard(UUID uuid);
 
-    UserCreateDTO update(UUID uuid, long dtUpdate, UserCreateDTO userCreateDTO);
+    void update(UUID uuid, long dtUpdate, UserCreateDTO userCreateDTO);
 
-    Page getPage(int numberOfPage, int size);
+    PageDTO<UserDTO> getPage(int numberOfPage, int size);
 
 
 }

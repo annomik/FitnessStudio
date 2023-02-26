@@ -1,19 +1,19 @@
 package by.it_academy.jd2.MJD29522.fitness.core.dto;
 
-import java.util.UUID;
-
 public class UserLoginDTO {
 
-    private UUID uuid;
     private String mail;
     private String password;
 
     public UserLoginDTO() {
     }
 
-    public UserLoginDTO(UUID uuid, String mail, String password) {
-        this.uuid = uuid;
+    public UserLoginDTO(String mail, String password) {
         this.mail = mail;
+        this.password = password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -29,6 +29,11 @@ public class UserLoginDTO {
         this.mail = mail;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "UserLoginDTO{" +
+                "mail='" + mail + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
