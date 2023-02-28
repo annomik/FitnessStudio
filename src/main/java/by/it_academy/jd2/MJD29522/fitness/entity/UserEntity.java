@@ -1,8 +1,7 @@
 package by.it_academy.jd2.MJD29522.fitness.entity;
 
-import by.it_academy.jd2.MJD29522.fitness.core.dto.UserCreateDTO;
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
+
 import java.time.LocalDateTime;
 
 import java.util.UUID;
@@ -15,11 +14,11 @@ import java.util.UUID;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(
+//            name = "UUID",
+//            strategy = "org.hibernate.id.UUIDGenerator"
+//    )
     @Column(name = "uuid")
     private UUID uuid;
 
@@ -179,4 +178,6 @@ public class UserEntity {
     public void setRoleEntity(RoleEntity roleEntity) {
         this.roleEntity = roleEntity;
     }
+
+
 }

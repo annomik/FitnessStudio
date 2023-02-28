@@ -1,16 +1,16 @@
 package by.it_academy.jd2.MJD29522.fitness.service;
 
-import by.it_academy.jd2.MJD29522.fitness.core.dto.UserDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.UserLoginDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.UserRegistrationDTO;
-import by.it_academy.jd2.MJD29522.fitness.dao.repositories.IPersonalAccountRepository;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserLoginDTO;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserRegistrationDTO;
+import by.it_academy.jd2.MJD29522.fitness.repositories.IPersonalAccountRepository;
 import by.it_academy.jd2.MJD29522.fitness.entity.StatusEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
-import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToDTO;
-import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToEntity;
+import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToDTO;
+import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
-import org.springframework.core.convert.converter.Converter;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,6 +48,8 @@ public class PersonalAccountService implements IPersonalAccountService {
         if (userEntity.getMail().equals(mail)
                 && userEntity.getVerificationCode() == verificationCode) {
             userEntity.setStatusEntity(new StatusEntity(UserStatus.ACTIVATED));
+           // userEntity.setDtUpdate(LocalDateTime.now());                       //???????????????
+            personalAccountRepository.save(userEntity);
             System.out.println(" User verify!!!!! ");
             return true;
         }  System.out.println(" User  DON'T verify!!!!! ");

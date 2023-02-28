@@ -1,17 +1,20 @@
 package by.it_academy.jd2.MJD29522.fitness.config;
 
-import by.it_academy.jd2.MJD29522.fitness.dao.repositories.IUserRepository;
-import by.it_academy.jd2.MJD29522.fitness.dao.repositories.IPersonalAccountRepository;
-import by.it_academy.jd2.MJD29522.fitness.service.ConversionToDTO;
+import by.it_academy.jd2.MJD29522.fitness.repositories.IProductRepository;
+import by.it_academy.jd2.MJD29522.fitness.repositories.IUserRepository;
+import by.it_academy.jd2.MJD29522.fitness.repositories.IPersonalAccountRepository;
+import by.it_academy.jd2.MJD29522.fitness.service.ProductService;
 import by.it_academy.jd2.MJD29522.fitness.service.UserService;
 import by.it_academy.jd2.MJD29522.fitness.service.PersonalAccountService;
-import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToDTO;
-import by.it_academy.jd2.MJD29522.fitness.service.api.IConversionToEntity;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IProductService;
+import by.it_academy.jd2.MJD29522.fitness.service.converters.ProductToDTO;
+import by.it_academy.jd2.MJD29522.fitness.service.converters.ProductToEntity;
+import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToDTO;
+import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
 
 @Configuration
 public class ServiceConfig {
@@ -30,4 +33,13 @@ public class ServiceConfig {
                                     IConversionToEntity conversionToEntity){
         return new UserService(userRepository, userService, conversionToDTO, conversionToEntity);
     }
+
+    @Bean
+    public IProductService productService(IProductRepository productRepository,
+                                          ProductToEntity productToEntity,
+                                          ProductToDTO productToDTO){
+        return new ProductService(productRepository, productToEntity, productToDTO);
+    }
+
+
 }

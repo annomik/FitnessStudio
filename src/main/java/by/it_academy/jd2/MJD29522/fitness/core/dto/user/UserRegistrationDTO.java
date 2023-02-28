@@ -1,4 +1,4 @@
-package by.it_academy.jd2.MJD29522.fitness.core.dto;
+package by.it_academy.jd2.MJD29522.fitness.core.dto.user;
 
 import java.util.Objects;
 
