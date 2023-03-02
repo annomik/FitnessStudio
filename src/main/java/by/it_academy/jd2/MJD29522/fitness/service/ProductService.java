@@ -42,30 +42,6 @@ public class ProductService implements IProductService {
         productRepository.save(entity);
     }
 
-//    @Override
-//    public void update(UUID uuid, long dtUpdate, UserCreateDTO userCreateDTO) {
-//        Optional<UserEntity> findUserEntity = userRepository.findById(uuid);
-//        UserEntity entity = findUserEntity.get();
-//        if (entity != null) {
-//            long epochMilli = ZonedDateTime.of(entity.getDtUpdate(), ZoneId.systemDefault()).toInstant().toEpochMilli();
-//
-//
-//            if ( epochMilli == dtUpdate && entity.getUuid().equals(uuid) ) {
-//                entity.setDtUpdate(LocalDateTime.now());
-//                entity.setMail(userCreateDTO.getMail());
-//                entity.setFio(userCreateDTO.getFio());
-//                entity.setRoleEntity(new RoleEntity(userCreateDTO.getRole()));
-//                entity.setStatusEntity(new StatusEntity(userCreateDTO.getStatus()));
-//                entity.setPassword(userCreateDTO.getPassword());
-//                userRepository.save(entity);
-//            }else{
-//                throw new IllegalArgumentException("Версии пользователя с id " + uuid +" не совпадают!");
-//            }
-//        } else {
-//            throw new IllegalArgumentException("Пользователя с id " + uuid + " для обновления не найдено!");
-//        }
-//    }
-
     @Override
     public void update(UUID uuid, long dtUpdate, ProductCreateDTO productCreateDTO) {
        Optional<ProductEntity> findEntity = productRepository.findById(uuid);
@@ -110,6 +86,6 @@ public class ProductService implements IProductService {
                 allEntity.isFirst(),
                 allEntity.getNumberOfElements(),
                 allEntity.isLast(),
-                content  );
+                content );
     }
 }

@@ -30,20 +30,20 @@ public class RecipeEntity {
     )
     private List<CompositionEntity> composition;
 
-//    @Column(name = "weight")
-//    private int weight;
-//
-//    @Column(name = "calories")
-//    private int calories;
-//
-//    @Column(name = "proteins")
-//    private double proteins;
-//
-//    @Column(name = "fats")
-//    private double fats;
-//
-//    @Column(name = "carbohydrates")
-//    private double carbohydrates;
+    @Column(name = "weight")
+    private int weight;
+
+    @Column(name = "calories")
+    private int calories;
+
+    @Column(name = "proteins")
+    private double proteins;
+
+    @Column(name = "fats")
+    private double fats;
+
+    @Column(name = "carbohydrates")
+    private double carbohydrates;
 
     public RecipeEntity() {
     }

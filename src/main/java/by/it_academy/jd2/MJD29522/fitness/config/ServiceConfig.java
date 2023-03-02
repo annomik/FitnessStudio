@@ -1,12 +1,15 @@
 package by.it_academy.jd2.MJD29522.fitness.config;
 
 import by.it_academy.jd2.MJD29522.fitness.repositories.IProductRepository;
+import by.it_academy.jd2.MJD29522.fitness.repositories.IRecipeRepository;
 import by.it_academy.jd2.MJD29522.fitness.repositories.IUserRepository;
 import by.it_academy.jd2.MJD29522.fitness.repositories.IPersonalAccountRepository;
 import by.it_academy.jd2.MJD29522.fitness.service.ProductService;
+import by.it_academy.jd2.MJD29522.fitness.service.RecipeService;
 import by.it_academy.jd2.MJD29522.fitness.service.UserService;
 import by.it_academy.jd2.MJD29522.fitness.service.PersonalAccountService;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IProductService;
+import by.it_academy.jd2.MJD29522.fitness.service.api.IRecipeService;
 import by.it_academy.jd2.MJD29522.fitness.service.converters.ProductToDTO;
 import by.it_academy.jd2.MJD29522.fitness.service.converters.ProductToEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToDTO;
@@ -41,5 +44,11 @@ public class ServiceConfig {
         return new ProductService(productRepository, productToEntity, productToDTO);
     }
 
+    @Bean
+    public IRecipeService recipeService(IRecipeRepository recipeRepository,
+                                        ProductToEntity productToEntity,
+                                        ProductToDTO productToDTO){
+        return new RecipeService(recipeRepository, productToEntity, productToDTO);
+    }
 
 }

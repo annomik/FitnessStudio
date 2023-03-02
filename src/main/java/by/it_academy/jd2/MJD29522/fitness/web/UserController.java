@@ -7,9 +7,7 @@ import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.UUID;
-
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -23,8 +21,12 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addNewUser(@RequestBody UserCreateDTO userCreateDTO) {
-        userService.addNewUser(userCreateDTO);
+
+        if (userService.addNewUser(userCreateDTO)) {
+       // userService.addNewUser(userCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+       return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     //Получить страницу пользователей

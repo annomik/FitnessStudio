@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface IUserService {
 
-    boolean addNewUser(UserCreateDTO userCreateDTO);
+    boolean addNewUser(UserCreateDTO userCreateDTO) ;
 
     UserDTO getCard(UUID uuid);
 
