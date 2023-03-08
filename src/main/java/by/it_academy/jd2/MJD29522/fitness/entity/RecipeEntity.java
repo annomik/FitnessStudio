@@ -23,27 +23,13 @@ public class RecipeEntity {
     @Column(name = "title")
     private String title;
 
-    @ElementCollection
-    @CollectionTable(
-            schema = "fitness", name = "composition",
-            joinColumns = @JoinColumn( name = "recipe_id")
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            schema = "fitness", name = "recipe_composition",
+            joinColumns = @JoinColumn( name = "recipe_uuid"),
+            inverseJoinColumns= @JoinColumn(name="composition_uuid")
     )
     private List<CompositionEntity> composition;
-
-    @Column(name = "weight")
-    private int weight;
-
-    @Column(name = "calories")
-    private int calories;
-
-    @Column(name = "proteins")
-    private double proteins;
-
-    @Column(name = "fats")
-    private double fats;
-
-    @Column(name = "carbohydrates")
-    private double carbohydrates;
 
     public RecipeEntity() {
     }
@@ -55,7 +41,6 @@ public class RecipeEntity {
         this.dtUpdate = dtUpdate;
         this.title = title;
         this.composition = composition;
-
     }
 
     public UUID getUuid() {

@@ -3,11 +3,10 @@ package by.it_academy.jd2.MJD29522.fitness.service;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductDTO;
-import by.it_academy.jd2.MJD29522.fitness.repositories.IProductRepository;
+import by.it_academy.jd2.MJD29522.fitness.repositories.api.IProductRepository;
 import by.it_academy.jd2.MJD29522.fitness.entity.ProductEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.api.*;
-import by.it_academy.jd2.MJD29522.fitness.service.converters.ProductToDTO;
-import by.it_academy.jd2.MJD29522.fitness.service.converters.ProductToEntity;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,33 +22,35 @@ import java.util.UUID;
 public class ProductService implements IProductService {
 
     private final IProductRepository productRepository;
-    private final ProductToEntity productToEntity;
-    private final ProductToDTO productToDTO;
+    private final ConversionService conversionService;
+   // private final ProductToEntity productToEntity;
+   // private final ProductToDTO productToDTO;
 
-    public ProductService(IProductRepository productRepository,
-                          ProductToEntity productToEntity,
-                          ProductToDTO productToDTO) {
-
+    public ProductService(IProductRepository productRepository, ConversionService conversionService) {
         this.productRepository = productRepository;
-        this.productToEntity = productToEntity;
-        this.productToDTO = productToDTO;
+        this.conversionService = conversionService;
     }
 
     @Override
     public void addNewProduct(ProductCreateDTO productCreateDTO) {
         //validation!!!
-        ProductEntity entity = productToEntity.convert(productCreateDTO);
+        ProductEntity entity = conversionService.convert(productCreateDTO, ProductEntity.class);
         productRepository.save(entity);
     }
 
     @Override
-    public void update(UUID uuid, long dtUpdate, ProductCreateDTO productCreateDTO) {
-       Optional<ProductEntity> findEntity = productRepository.findById(uuid);
-        ProductEntity entity = findEntity.get();
-        if (entity != null) {
-            long epochMilli = ZonedDateTime.of(entity.getDtUpdate(), ZoneId.systemDefault()).toInstant().toEpochMilli();
+    public Optional<ProductEntity> findByUUID(UUID uuid){
+        return  productRepository.findById(uuid);
+    }
 
-            if ( epochMilli == dtUpdate && entity.getUuid().equals(uuid) ) {
+    @Override
+    public void update(UUID uuid, LocalDateTime dtUpdate, ProductCreateDTO productCreateDTO) {
+       Optional<ProductEntity> findEntity = productRepository.findById(uuid);
+
+        if (! findEntity.isPresent()){
+               // isEmpty()) {
+            ProductEntity entity = findEntity.get();
+            if ( entity.getDtUpdate().isEqual(dtUpdate) && entity.getUuid().equals(uuid) ) {
                 entity.setDtUpdate(LocalDateTime.now());
                 entity.setTitle(productCreateDTO.getTitle());
                 entity.setWeight(productCreateDTO.getWeight());
@@ -65,7 +66,6 @@ public class ProductService implements IProductService {
         } else {
             throw new IllegalArgumentException("Продукта с id " + uuid + " для обновления не найдено!");
         }
-
     }
 
     @Override
@@ -75,11 +75,10 @@ public class ProductService implements IProductService {
         Page<ProductEntity> allEntity = productRepository.findAll(pageable);
         List<ProductDTO> content = new ArrayList<>();
         for (ProductEntity entity: allEntity) {
-            ProductDTO productDTO = productToDTO.convert(entity);
+            ProductDTO productDTO = conversionService.convert(entity, ProductDTO.class);
             content.add(productDTO);
         }
-
-        return new PageDTO<ProductDTO>(allEntity.getNumber(),
+        return new PageDTO<>(allEntity.getNumber(),
                 allEntity.getSize(),
                 allEntity.getTotalPages(),
                 allEntity.getTotalElements(),

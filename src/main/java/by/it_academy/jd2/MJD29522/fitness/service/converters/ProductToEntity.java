@@ -12,9 +12,11 @@ public class ProductToEntity implements Converter<ProductCreateDTO, ProductEntit
 
     @Override
     public ProductEntity convert(ProductCreateDTO productCreateDTO) {
+        LocalDateTime dtCreate = LocalDateTime.now().withNano(0);
+        LocalDateTime dtUpdate = dtCreate;
         return new ProductEntity(UUID.randomUUID(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                dtCreate,
+                dtUpdate,
                 productCreateDTO.getTitle(),
                 productCreateDTO.getWeight(),
                 productCreateDTO.getCalories(),

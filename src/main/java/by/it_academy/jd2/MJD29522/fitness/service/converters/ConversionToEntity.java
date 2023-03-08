@@ -19,15 +19,17 @@ public class ConversionToEntity implements IConversionToEntity
 
     @Override
     public UserEntity convertToEntity(UserRegistrationDTO userRegistrationDTO) {
-
+        LocalDateTime dtCreate = LocalDateTime.now().withNano(0);
+        LocalDateTime dtUpdate = dtCreate;
+        int verificationCode = (int)(Math.random() * 10000);
         return new UserEntity(UUID.randomUUID(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                dtCreate,
+                dtUpdate,
                 userRegistrationDTO.getMail(),
                 userRegistrationDTO.getFio(),
                 new StatusEntity(UserStatus.WAITING_ACTIVATION),
                 userRegistrationDTO.getPassword(),
-                (int)(Math.random() * 10000),
+                Integer.toString(verificationCode),
                 new RoleEntity(UserRole.USER)
         );
     }
@@ -35,9 +37,11 @@ public class ConversionToEntity implements IConversionToEntity
     //admin created user
     @Override
     public UserEntity convertToEntity(UserCreateDTO userCreateDTO) {
+        LocalDateTime dtCreate = LocalDateTime.now().withNano(0);
+        LocalDateTime dtUpdate = dtCreate;
         return new UserEntity(UUID.randomUUID(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                dtCreate,
+                dtUpdate,
                 userCreateDTO.getMail(),
                 userCreateDTO.getFio(),
                 new StatusEntity(userCreateDTO.getStatus()),

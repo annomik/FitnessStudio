@@ -3,7 +3,7 @@ package by.it_academy.jd2.MJD29522.fitness.service;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserLoginDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserRegistrationDTO;
-import by.it_academy.jd2.MJD29522.fitness.repositories.IPersonalAccountRepository;
+import by.it_academy.jd2.MJD29522.fitness.repositories.api.IPersonalAccountRepository;
 import by.it_academy.jd2.MJD29522.fitness.entity.StatusEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
@@ -43,10 +43,10 @@ public class PersonalAccountService implements IPersonalAccountService {
     }
 
     @Override
-    public boolean verify(int verificationCode, String mail) {
+    public boolean verify(String verificationCode, String mail) {
         UserEntity userEntity = personalAccountRepository.findByMail(mail);
         if (userEntity.getMail().equals(mail)
-                && userEntity.getVerificationCode() == verificationCode) {
+                && userEntity.getVerificationCode().equals(verificationCode)) {
             userEntity.setStatusEntity(new StatusEntity(UserStatus.ACTIVATED));
            // userEntity.setDtUpdate(LocalDateTime.now());                       //???????????????
             personalAccountRepository.save(userEntity);

@@ -1,21 +1,22 @@
 package by.it_academy.jd2.MJD29522.fitness.core.dto.food;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductCreateDTO {
-
-    private String title;
+public class CompositionWithAllParametersDTO {
+       //List?
+    private ProductDTO product;
     private int weight;
     private int calories;
     private double proteins;
     private double fats;
     private double carbohydrates;
 
-    public ProductCreateDTO() {
+    public CompositionWithAllParametersDTO() {
     }
 
-    public ProductCreateDTO( String title, int weight, int calories,
-                            double proteins, double fats, double carbohydrates) {
-        this.title = title;
+    public CompositionWithAllParametersDTO(ProductDTO product,
+                                           int weight, int calories,
+                                           double proteins,
+                                           double fats, double carbohydrates) {
+        this.product = product;
         this.weight = weight;
         this.calories = calories;
         this.proteins = proteins;
@@ -23,12 +24,12 @@ public class ProductCreateDTO {
         this.carbohydrates = carbohydrates;
     }
 
-    public String getTitle() {
-        return title;
+    public ProductDTO getProduct() {
+        return product;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setProduct(ProductDTO product) {
+        this.product = product;
     }
 
     public int getWeight() {

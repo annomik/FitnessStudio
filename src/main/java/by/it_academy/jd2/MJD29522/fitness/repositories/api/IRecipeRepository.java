@@ -1,4 +1,4 @@
-package by.it_academy.jd2.MJD29522.fitness.repositories;
+package by.it_academy.jd2.MJD29522.fitness.repositories.api;
 
 import by.it_academy.jd2.MJD29522.fitness.entity.RecipeEntity;
 import org.springframework.data.domain.Page;

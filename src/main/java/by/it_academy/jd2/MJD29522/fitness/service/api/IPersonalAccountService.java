@@ -12,7 +12,7 @@ public interface IPersonalAccountService {
 
     UserDTO getCard(UUID id);
 
-    boolean verify(int verificationCode, String mail);
+    boolean verify(String verificationCode, String mail);
 
     UserLoginDTO login(UserLoginDTO userLoginDTO);
 

@@ -3,11 +3,12 @@ package by.it_academy.jd2.MJD29522.fitness.web;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +36,7 @@ public class ProductController {
 
     @RequestMapping(path = "/{uuid}/dt_update/{dt_update}", method = RequestMethod.PUT)
     public ResponseEntity<?> update(@PathVariable("uuid") UUID uuid,
-                                    @PathVariable("dt_update") long dtUpdate,
+                                    @PathVariable("dt_update") LocalDateTime dtUpdate,
                                     @RequestBody ProductCreateDTO product) {
         productService.update(uuid, dtUpdate, product);
         return ResponseEntity.status(HttpStatus.OK).build();

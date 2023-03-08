@@ -22,8 +22,9 @@ public class UserEntity {
     @Column(name = "uuid")
     private UUID uuid;
 
-    @Column(name = "dt_create")
+    @Column(name = "dt_create", updatable = false)
     private LocalDateTime dtCreate;
+
     @Column(name = "dt_update")
     @Version
     private LocalDateTime dtUpdate;
@@ -48,7 +49,7 @@ public class UserEntity {
     private String password;
 
     @Column(name = "code", table= "user_code")
-    private int verificationCode;
+    private String verificationCode;
 
     @Enumerated(EnumType.STRING)
     @ManyToOne(cascade = CascadeType.ALL)
@@ -66,7 +67,7 @@ public class UserEntity {
     //UserRegistrationDTO
     public UserEntity(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate,
                       String mail, String fio, StatusEntity statusEntity, String password,
-                      int verificationCode, RoleEntity roleEntity) {
+                      String verificationCode, RoleEntity roleEntity) {
         this.uuid = uuid;
         this.dtCreate = dtCreate;
         this.dtUpdate = dtUpdate;
@@ -163,11 +164,11 @@ public class UserEntity {
         this.password = password;
     }
 
-    public int getVerificationCode() {
+    public String getVerificationCode() {
         return verificationCode;
     }
 
-    public void setVerificationCode(int verificationCode) {
+    public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
     }
 

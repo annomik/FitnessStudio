@@ -7,6 +7,8 @@ import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -29,7 +31,6 @@ public class UserController {
        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-    //Получить страницу пользователей
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<PageDTO<UserDTO>> getPage(
             @RequestParam(name = "page", required = false, defaultValue = "0") int numberOfPage,
@@ -40,13 +41,12 @@ public class UserController {
     //Получить информацию о пользователе
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
     public ResponseEntity<UserDTO> getCard(@PathVariable("uuid") UUID uuid){
-
         return ResponseEntity.status(HttpStatus.OK).body(userService.getCard(uuid));
     }
 
     @RequestMapping(path = "/{uuid}/dt_update/{dt_update}", method = RequestMethod.PUT)
     public ResponseEntity<?> update(@PathVariable("uuid") UUID uuid,
-                                    @PathVariable("dt_update") long dtUpdate,
+                                    @PathVariable("dt_update") LocalDateTime dtUpdate,
                                     @RequestBody UserCreateDTO userCreateDTO ) {
         userService.update(uuid, dtUpdate, userCreateDTO);
         return ResponseEntity.status(HttpStatus.OK).build();

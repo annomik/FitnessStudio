@@ -23,12 +23,11 @@ public class PersonalAccountController {
 
     @RequestMapping(path = "/registration", method = RequestMethod.POST)
     public void register(@RequestBody UserRegistrationDTO userRegistrationDTO) {
-
         service.save(userRegistrationDTO);
     }
 
     @RequestMapping(path = "/verification", method = RequestMethod.GET)
-    public ResponseEntity<UserRegistrationDTO> verify(@RequestParam("code") int verificationCode,
+    public ResponseEntity<UserRegistrationDTO> verify(@RequestParam("code") String verificationCode,
                                                       @RequestParam("mail") String mail) {
          service.verify(verificationCode, mail);
          return ResponseEntity.status(HttpStatus.OK).build();

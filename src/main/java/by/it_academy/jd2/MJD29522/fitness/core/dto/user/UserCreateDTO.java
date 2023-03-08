@@ -4,6 +4,7 @@ import by.it_academy.jd2.MJD29522.fitness.enums.UserRole;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
@@ -11,8 +12,8 @@ public class UserCreateDTO {
 
     private UUID uuid;
 
-    private Long dtCreate;
-    private Long dtUpdate;
+    private LocalDateTime dtCreate;
+    private LocalDateTime dtUpdate;
     private String mail;
     private String fio;
     private UserRole role;
@@ -22,7 +23,7 @@ public class UserCreateDTO {
     public UserCreateDTO() {
     }
 
-    public UserCreateDTO(UUID uuid, Long dtCreate, Long dtUpdate,
+    public UserCreateDTO(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate,
                          String mail, String fio, UserRole role, UserStatus status,
                          String password ) {
         this.uuid = uuid;
@@ -43,19 +44,31 @@ public class UserCreateDTO {
         return password;
     }
 
-    public Long getDtCreate() {
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public LocalDateTime getDtCreate() {
         return dtCreate;
     }
 
-    public void setDtCreate(Long dtCreate) {
+    public void setDtCreate(LocalDateTime dtCreate) {
         this.dtCreate = dtCreate;
     }
 
-    public Long getDtUpdate() {
+    public LocalDateTime getDtUpdate() {
         return dtUpdate;
     }
 
-    public void setDtUpdate(Long dtUpdate) {
+    public void setFio(String fio) {
+        this.fio = fio;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setDtUpdate(LocalDateTime dtUpdate) {
         this.dtUpdate = dtUpdate;
     }
 

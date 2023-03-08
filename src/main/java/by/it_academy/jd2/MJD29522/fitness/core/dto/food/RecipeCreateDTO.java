@@ -1,15 +1,16 @@
 package by.it_academy.jd2.MJD29522.fitness.core.dto.food;
 
+import java.util.List;
 
 public class RecipeCreateDTO {
 
     private String title;
-    private CompositionDTO composition;
+    private List<CompositionDTO> composition;
 
     public RecipeCreateDTO() {
     }
 
-    public RecipeCreateDTO(String title, CompositionDTO composition) {
+    public RecipeCreateDTO(String title, List<CompositionDTO> composition) {
         this.title = title;
         this.composition = composition;
     }
@@ -22,11 +23,9 @@ public class RecipeCreateDTO {
         this.title = title;
     }
 
-    public CompositionDTO getComposition() {
+    public List<CompositionDTO> getComposition() {
         return composition;
     }
 
-    public void setComposition(CompositionDTO composition) {
-        this.composition = composition;
-    }
+
 }

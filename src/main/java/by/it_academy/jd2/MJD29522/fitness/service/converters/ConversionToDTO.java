@@ -14,8 +14,8 @@ public class ConversionToDTO implements IConversionToDTO {
     public UserDTO convertToDTO(UserEntity userEntity) {
 
         return new UserDTO(userEntity.getUuid(),
-                ZonedDateTime.of(userEntity.getDtCreate(), ZoneId.systemDefault()).toInstant().toEpochMilli(),
-                ZonedDateTime.of(userEntity.getDtUpdate(), ZoneId.systemDefault()).toInstant().toEpochMilli(),
+                userEntity.getDtCreate(),
+                userEntity.getDtUpdate(),
                 userEntity.getMail(),
                 userEntity.getFio(),
                 userEntity.getRoleEntity().getRole(),

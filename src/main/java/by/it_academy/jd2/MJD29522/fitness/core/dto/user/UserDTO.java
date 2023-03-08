@@ -2,13 +2,20 @@ package by.it_academy.jd2.MJD29522.fitness.core.dto.user;
 
 import by.it_academy.jd2.MJD29522.fitness.enums.UserRole;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
+import by.it_academy.jd2.MJD29522.fitness.serializers.LocalDateTimeSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class UserDTO {
 
     private UUID uuid ;
-    private Long dtCreate;
-    private Long dtUpdate;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime dtCreate;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime dtUpdate;
     private String mail;
     private String fio;
     private UserRole role;
@@ -17,7 +24,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(UUID uuid, Long dtCreate, Long dtUpdate,
+    public UserDTO(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate,
                    String mail, String fio, UserRole role, UserStatus status
                  ) {
         this.uuid = uuid;
@@ -41,19 +48,23 @@ public class UserDTO {
         return uuid;
     }
 
-    public Long getDtCreate() {
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public LocalDateTime getDtCreate() {
         return dtCreate;
     }
 
-    public void setDtCreate(Long dtCreate) {
-        this.dtCreate = dtCreate;
-    }
-
-    public Long getDtUpdate() {
+    public LocalDateTime getDtUpdate() {
         return dtUpdate;
     }
 
-    public void setDtUpdate(Long dtUpdate) {
+    public void setDtCreate(LocalDateTime dtCreate) {
+        this.dtCreate = dtCreate;
+    }
+
+    public void setDtUpdate(LocalDateTime dtUpdate) {
         this.dtUpdate = dtUpdate;
     }
 

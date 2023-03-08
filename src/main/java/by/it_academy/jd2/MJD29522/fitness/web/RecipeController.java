@@ -5,9 +5,12 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeDTO;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IRecipeService;
 
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +38,7 @@ public class RecipeController {
 
     @RequestMapping(path = "/{uuid}/dt_update/{dt_update}", method = RequestMethod.PUT)
     public ResponseEntity<?> update(@PathVariable("uuid") UUID uuid,
-                                    @PathVariable("dt_update") long dtUpdate,
+                                    @PathVariable("dt_update") LocalDateTime dtUpdate, //??????
                                     @RequestBody RecipeCreateDTO recipeCreateDTO ) {
         recipeService.update(uuid, dtUpdate, recipeCreateDTO);
         return ResponseEntity.status(HttpStatus.OK).build();

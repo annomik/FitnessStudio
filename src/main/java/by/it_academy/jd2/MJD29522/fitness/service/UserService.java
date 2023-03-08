@@ -3,11 +3,10 @@ package by.it_academy.jd2.MJD29522.fitness.service;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.BlankFieldException;
 import by.it_academy.jd2.MJD29522.fitness.core.exception.error.Error;
 import by.it_academy.jd2.MJD29522.fitness.core.exception.error.MultipleErrorResponse;
 import by.it_academy.jd2.MJD29522.fitness.core.exception.error.SingleErrorResponse;
-import by.it_academy.jd2.MJD29522.fitness.repositories.IUserRepository;
+import by.it_academy.jd2.MJD29522.fitness.repositories.api.IUserRepository;
 import by.it_academy.jd2.MJD29522.fitness.entity.RoleEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.StatusEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
@@ -20,8 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 public class UserService implements IUserService {
@@ -52,14 +49,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void update(UUID uuid, long dtUpdate, UserCreateDTO userCreateDTO) {
+    public void update(UUID uuid, LocalDateTime dtUpdate, UserCreateDTO userCreateDTO) {
         Optional<UserEntity> findUserEntity = userRepository.findById(uuid);
 
-        if (!findUserEntity.isEmpty()) {
+        if (findUserEntity.isEmpty()) {
+            throw new SingleErrorResponse("Пользователя с id " + uuid + " для обновления не найдено!");
+        } else {
             UserEntity entity = findUserEntity.get();
-            long epochMilli = ZonedDateTime.of(entity.getDtUpdate(), ZoneId.systemDefault()).toInstant().toEpochMilli();
-
-            if ( epochMilli == dtUpdate && entity.getUuid().equals(uuid) ) {
+            if (entity.getDtUpdate().isEqual(dtUpdate) && entity.getUuid().equals(uuid) ) {
                 entity.setDtUpdate(LocalDateTime.now());
                 entity.setMail(userCreateDTO.getMail());
                 entity.setFio(userCreateDTO.getFio());
@@ -68,10 +65,8 @@ public class UserService implements IUserService {
                 entity.setPassword(userCreateDTO.getPassword());
                 userRepository.save(entity);
             }else{
-                throw new SingleErrorResponse("Версии для пользователя с id " + uuid +" не совпадают!");
+                throw new SingleErrorResponse("Версии для пользователя не совпадают!");
             }
-        } else {
-            throw new SingleErrorResponse("Пользователя с id " + uuid + " для обновления не найдено!");
         }
     }
 
@@ -91,7 +86,7 @@ public class UserService implements IUserService {
             content.add(userDTO);
         }
 
-        return new PageDTO<UserDTO>(allEntity.getNumber(),
+        return new PageDTO<>(allEntity.getNumber(),
                 allEntity.getSize(),
                 allEntity.getTotalPages(),
                 allEntity.getTotalElements(),
@@ -103,24 +98,22 @@ public class UserService implements IUserService {
 
     public boolean validate(UserCreateDTO userCreateDTO)  {
         MultipleErrorResponse multipleErrorResponse = new MultipleErrorResponse();
-//        if(userCreateDTO == null){
-//            throw new SingleErrorResponse("НЕ переданы данные");
-//        } else {
-            if (userCreateDTO.getFio() == null || userCreateDTO.getFio().isBlank()){
-                multipleErrorResponse.setErrors(new Error("FIO", "Поле не заполнено"));
-                throw new BlankFieldException("FIO");
-            }
-            if (userCreateDTO.getMail() == null || userCreateDTO.getMail().isBlank()) {
-                multipleErrorResponse.setLogref("some_error");
-                multipleErrorResponse.setErrors(new Error("MAIL", "Поле не заполнено"));
-                throw new BlankFieldException("Поле не заполнено");
 
-            }
-     //   }
+        if (userCreateDTO.getFio() == null || userCreateDTO.getFio().isBlank()){
+            multipleErrorResponse.setErrors(new Error("FIO", "Поле не заполнено"));
+        }
+        if (userCreateDTO.getMail() == null || userCreateDTO.getMail().isBlank()) {
+            multipleErrorResponse.setErrors(new Error("MAIL", "Поле не заполнено"));
+        }
+
+        if (userCreateDTO.getPassword() == null || userCreateDTO.getPassword().isBlank()) {
+            multipleErrorResponse.setErrors(new Error("Password", "Поле не заполнено"));
+        }
+
         if (multipleErrorResponse == null) {
             return true;
         }
-       // throw multipleErrorResponse;
-        return false;
+        throw multipleErrorResponse;
+
     }
 }

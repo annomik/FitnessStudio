@@ -1,13 +1,21 @@
 package by.it_academy.jd2.MJD29522.fitness.core.dto.food;
 
+import by.it_academy.jd2.MJD29522.fitness.serializers.LocalDateTimeSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ProductDTO {
 
     private UUID uuid;
 
-    private Long dtCreate;
-    private Long dtUpdate;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime dtCreate;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime dtUpdate;
+
     private String title;
     private int weight;
     private int calories;
@@ -18,7 +26,7 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(UUID uuid, Long dtCreate, Long dtUpdate,
+    public ProductDTO(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate,
                       String title, int weight, int calories,
                       double proteins, double fats, double carbohydrates) {
         this.uuid = uuid;
@@ -88,19 +96,19 @@ public class ProductDTO {
         this.carbohydrates = carbohydrates;
     }
 
-    public Long getDtCreate() {
+    public LocalDateTime getDtCreate() {
         return dtCreate;
     }
 
-    public void setDtCreate(Long dtCreate) {
+    public void setDtCreate(LocalDateTime dtCreate) {
         this.dtCreate = dtCreate;
     }
 
-    public Long getDtUpdate() {
+    public LocalDateTime getDtUpdate() {
         return dtUpdate;
     }
 
-    public void setDtUpdate(Long dtUpdate) {
+    public void setDtUpdate(LocalDateTime dtUpdate) {
         this.dtUpdate = dtUpdate;
     }
 }

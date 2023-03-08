@@ -7,5 +7,5 @@ import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
 public interface IConversionToEntity {
 
     UserEntity convertToEntity(UserRegistrationDTO userRegistrationDTO);
-    UserEntity convertToEntity(UserCreateDTO userCreateDTO);
+    UserEntity convertToEntity(UserCreateDTO userCreateDTO); //дженерик
 }
