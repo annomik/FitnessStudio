@@ -4,6 +4,7 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,10 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addNewUser(@RequestBody UserCreateDTO userCreateDTO) {
 
-        if (userService.addNewUser(userCreateDTO)) {
-       // userService.addNewUser(userCreateDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-        }
+       // if (userService.addNewUser(userCreateDTO)) {
+        userService.addNewUser(userCreateDTO);
+//        return ResponseEntity.status(HttpStatus.CREATED).build();
+//        }
        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 

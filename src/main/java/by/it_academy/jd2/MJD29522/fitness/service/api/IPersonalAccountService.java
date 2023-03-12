@@ -12,11 +12,11 @@ public interface IPersonalAccountService {
 
     UserDTO getCard(UUID id);
 
-    boolean verify(String verificationCode, String mail);
+    void verify(String verificationCode, String mail);
 
-    UserLoginDTO login(UserLoginDTO userLoginDTO);
+    void login(UserLoginDTO userLoginDTO);
 
-    boolean validate(UserRegistrationDTO userRegistrationDTO);
+    void validate(UserRegistrationDTO userRegistrationDTO);
 
 
 }

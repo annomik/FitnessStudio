@@ -6,6 +6,7 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.exception.error.MultipleErrorResponse;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.error.SingleErrorResponse;
 import by.it_academy.jd2.MJD29522.fitness.entity.CompositionEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.ProductEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.RecipeEntity;
@@ -47,14 +48,14 @@ public class RecipeService implements IRecipeService {
     public void addNewRecipe(RecipeCreateDTO recipeCreateDTO) {
         //validation!
 
-        LocalDateTime dtCreate = LocalDateTime.now().withNano(0);
-        LocalDateTime dtUpdate = dtCreate;
+        LocalDateTime dtCreate = LocalDateTime.now(); //.withNano(3);
+
         List<CompositionDTO> compositionList = recipeCreateDTO.getComposition();
         List<CompositionEntity> compositionEntityList = new ArrayList<>();
         for(CompositionDTO composition : compositionList){
             Optional<ProductEntity> productFoundInDB =
                     productService.findByUUID(composition.getProduct().getUuid());
-            ProductEntity productEntity = productFoundInDB.get();
+            ProductEntity productEntity = productFoundInDB.get(); //validation!
             compositionEntityList.add(new CompositionEntity(
                    UUID.randomUUID(),  // поиск Composition ???
                     productEntity,
@@ -63,7 +64,7 @@ public class RecipeService implements IRecipeService {
 
         RecipeEntity recipeEntity = new RecipeEntity(UUID.randomUUID(),
                 dtCreate,
-                dtUpdate,
+                dtCreate,
                 recipeCreateDTO.getTitle(),
                 compositionEntityList
         );
@@ -72,33 +73,35 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public void update(UUID uuid, LocalDateTime dtUpdate, RecipeCreateDTO recipeCreateDTO) {
-        Optional<RecipeEntity> findEntity = recipeRepository.findById(uuid);
-        if (!findEntity.isEmpty()) {
-            RecipeEntity recipeEntity = findEntity.get();
-
-            if (recipeEntity.getDtUpdate().isEqual(dtUpdate) && recipeEntity.getUuid().equals(uuid)) {
-                List<CompositionDTO> compositionList = recipeCreateDTO.getComposition();
-                List<CompositionEntity> compositionEntityList = new ArrayList<>();
-                for (CompositionDTO composition : compositionList) {
-                    Optional<ProductEntity> productFoundInDB = productService.findByUUID(composition.getProduct().getUuid());
-                    ProductEntity productEntity = productFoundInDB.get();
-                    compositionEntityList.add(new CompositionEntity(
-                            UUID.randomUUID(),
-                            productEntity,
-                            composition.getWeight()));
-                }
-                recipeEntity.setDtUpdate(LocalDateTime.now().withNano(0));
-                recipeEntity.setTitle(recipeCreateDTO.getTitle());
-                recipeEntity.setComposition(compositionEntityList);
-
-                recipeRepository.save(recipeEntity);
-            } else {
-                throw new IllegalArgumentException("Версии рецепта с id " + uuid + " не совпадают!");
-            }
-        } else {
-            throw new IllegalArgumentException("Рецепта с id " + uuid + " для обновления не найдено!");
+        if (uuid == null || dtUpdate == null || recipeCreateDTO == null) {
+            throw new SingleErrorResponse("Введите параметры для обновления");
         }
+        Optional<RecipeEntity> findEntity = recipeRepository.findById(uuid);
+        if (!findEntity.isPresent()) {
+            throw new SingleErrorResponse("Рецепта с id " + uuid + " для обновления не найдено!");
+        }
+        RecipeEntity recipeEntity = findEntity.get();
+
+        if (!(recipeEntity.getDtUpdate().isEqual(dtUpdate) && recipeEntity.getUuid().equals(uuid))) {
+            throw new SingleErrorResponse("Версии рецепта с id " + uuid + " не совпадают!");
+        }
+        List<CompositionDTO> compositionList = recipeCreateDTO.getComposition();
+        List<CompositionEntity> compositionEntityList = new ArrayList<>();
+        for (CompositionDTO composition : compositionList) {
+            Optional<ProductEntity> productFoundInDB = productService.findByUUID(composition.getProduct().getUuid());
+            ProductEntity productEntity = productFoundInDB.get();
+            //validation! not null
+            compositionEntityList.add(new CompositionEntity(
+                    UUID.randomUUID(),
+                    productEntity,
+                    composition.getWeight()));
+        }
+        recipeEntity.setTitle(recipeCreateDTO.getTitle());
+        recipeEntity.setComposition(compositionEntityList);
+
+        recipeRepository.save(recipeEntity);
     }
+
 
     @Override
     public PageDTO<RecipeDTO> getPage(int numberOfPage, int size) {
@@ -144,7 +147,7 @@ public class RecipeService implements IRecipeService {
 //            multipleErrorResponse.setErrors(new Error("Password", "Поле не заполнено"));
 //        }
 //
-        if (multipleErrorResponse == null) {
+        if (multipleErrorResponse.getErrors().isEmpty()) {
             return true;
         }
         throw multipleErrorResponse;

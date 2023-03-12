@@ -2,7 +2,7 @@ package by.it_academy.jd2.MJD29522.fitness.core.dto.user;
 
 import by.it_academy.jd2.MJD29522.fitness.enums.UserRole;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
-import by.it_academy.jd2.MJD29522.fitness.serializers.LocalDateTimeSerializer;
+import by.it_academy.jd2.MJD29522.fitness.service.converters.serializers.LocalDateTimeToLongSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.LocalDateTime;
@@ -11,10 +11,12 @@ import java.util.UUID;
 public class UserDTO {
 
     private UUID uuid ;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    //@JsonDeserialize(using = LongToLDTDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeToLongSerializer.class)
     private LocalDateTime dtCreate;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+   // @JsonDeserialize(converter = LongToLDTDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeToLongSerializer.class)
     private LocalDateTime dtUpdate;
     private String mail;
     private String fio;

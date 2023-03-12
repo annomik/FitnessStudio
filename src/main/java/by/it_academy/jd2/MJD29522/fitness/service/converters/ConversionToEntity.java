@@ -13,18 +13,17 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Component
-public class ConversionToEntity implements IConversionToEntity
+public class ConversionToEntity implements IConversionToEntity {
         //Converter<UserRegistrationDTO,UserEntity>
-                                                        {
 
     @Override
     public UserEntity convertToEntity(UserRegistrationDTO userRegistrationDTO) {
-        LocalDateTime dtCreate = LocalDateTime.now().withNano(0);
-        LocalDateTime dtUpdate = dtCreate;
+        LocalDateTime dtCreate = LocalDateTime.now();
+
         int verificationCode = (int)(Math.random() * 10000);
         return new UserEntity(UUID.randomUUID(),
                 dtCreate,
-                dtUpdate,
+                dtCreate,
                 userRegistrationDTO.getMail(),
                 userRegistrationDTO.getFio(),
                 new StatusEntity(UserStatus.WAITING_ACTIVATION),
@@ -37,11 +36,11 @@ public class ConversionToEntity implements IConversionToEntity
     //admin created user
     @Override
     public UserEntity convertToEntity(UserCreateDTO userCreateDTO) {
-        LocalDateTime dtCreate = LocalDateTime.now().withNano(0);
-        LocalDateTime dtUpdate = dtCreate;
+        LocalDateTime dtCreate = LocalDateTime.now();   //.withNano(3);
+
         return new UserEntity(UUID.randomUUID(),
                 dtCreate,
-                dtUpdate,
+                dtCreate,
                 userCreateDTO.getMail(),
                 userCreateDTO.getFio(),
                 new StatusEntity(userCreateDTO.getStatus()),

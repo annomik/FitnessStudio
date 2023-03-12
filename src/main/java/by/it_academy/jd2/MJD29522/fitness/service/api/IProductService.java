@@ -19,5 +19,6 @@ public interface IProductService {
 
     PageDTO<ProductDTO> getPage(int numberOfPage, int size);
 
+    void validate(ProductCreateDTO productCreateDTO);
 
 }

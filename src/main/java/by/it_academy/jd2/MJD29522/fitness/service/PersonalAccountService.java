@@ -3,6 +3,9 @@ package by.it_academy.jd2.MJD29522.fitness.service;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserLoginDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserRegistrationDTO;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.error.Error;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.error.MultipleErrorResponse;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.error.SingleErrorResponse;
 import by.it_academy.jd2.MJD29522.fitness.repositories.api.IPersonalAccountRepository;
 import by.it_academy.jd2.MJD29522.fitness.entity.StatusEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
@@ -30,6 +33,7 @@ public class PersonalAccountService implements IPersonalAccountService {
 
     @Override
     public boolean save(UserRegistrationDTO userRegistrationDTO) {
+        validate(userRegistrationDTO);
         UserEntity entity = conversionToEntity.convertToEntity(userRegistrationDTO);
         personalAccountRepository.save(entity);
         return true;
@@ -38,38 +42,58 @@ public class PersonalAccountService implements IPersonalAccountService {
     @Override
     public UserDTO getCard(UUID uuid) {
         Optional<UserEntity> findUserEntity = personalAccountRepository.findById(uuid);
+        if(findUserEntity.isEmpty()){
+            throw new SingleErrorResponse("Пользователя с id " + uuid + " нет базе данных!");
+        }
         UserEntity userEntity = findUserEntity.get();
         return conversionToDTO.convertToDTO(userEntity);
     }
 
     @Override
-    public boolean verify(String verificationCode, String mail) {
+    public void verify(String verificationCode, String mail) {
         UserEntity userEntity = personalAccountRepository.findByMail(mail);
+        if(userEntity == null){
+            throw new SingleErrorResponse("Такого пользователя не существует");
+        }
         if (userEntity.getMail().equals(mail)
                 && userEntity.getVerificationCode().equals(verificationCode)) {
             userEntity.setStatusEntity(new StatusEntity(UserStatus.ACTIVATED));
-           // userEntity.setDtUpdate(LocalDateTime.now());                       //???????????????
             personalAccountRepository.save(userEntity);
-            System.out.println(" User verify!!!!! ");
-            return true;
-        }  System.out.println(" User  DON'T verify!!!!! ");
-        return false;
+        }  else throw new SingleErrorResponse("Проверьте правильность верификационного кода");
     }
 
     @Override
-    public UserLoginDTO login(UserLoginDTO userLoginDTO) {
+    public void login(UserLoginDTO userLoginDTO) {
         UserEntity userEntity = personalAccountRepository.findByMail(userLoginDTO.getMail());
-        if (userEntity.getMail().equals(userLoginDTO.getMail()) && userEntity.getPassword().equals(userLoginDTO.getPassword())){
-            System.out.println(" Вход выполнен");
-        } else {
-            throw new IllegalArgumentException("Неправильно введены данные");
+        if(userEntity == null){
+            throw new SingleErrorResponse("Такого пользователя не существует");
         }
-        return null;
+        if (userEntity.getMail().equals(userLoginDTO.getMail()) && userEntity.getPassword().equals(userLoginDTO.getPassword())){
+          //  System.out.println(" Вход выполнен");
+        } else {
+            throw new SingleErrorResponse("Неправильно введены данные");
+        }
     }
 
     @Override
-    public boolean validate(UserRegistrationDTO userRegistrationDTO) {
-       return true;
+    public void validate(UserRegistrationDTO userRegistrationDTO) {
+        MultipleErrorResponse multipleErrorResponse = new MultipleErrorResponse();
 
+        if (userRegistrationDTO.getFio() == null || userRegistrationDTO.getFio().isBlank()){
+            multipleErrorResponse.setErrors(new Error("FIO", "Поле не заполнено"));
+        }
+        if (userRegistrationDTO.getMail() == null || userRegistrationDTO.getMail().isBlank()) {
+            multipleErrorResponse.setErrors(new Error("MAIL", "Поле не заполнено"));
+        }
+        UserEntity userEntity = personalAccountRepository.findByMail(userRegistrationDTO.getMail());
+        if(!(userEntity == null)){
+            multipleErrorResponse.setErrors(new Error("MAIL","Пользователь с таким MAIL уже существует"));
+        }
+        if (userRegistrationDTO.getPassword() == null || userRegistrationDTO.getPassword().isBlank()) {
+            multipleErrorResponse.setErrors(new Error("Password", "Поле не заполнено"));
+        }
+        if ( !multipleErrorResponse.getErrors().isEmpty()) {
+            throw multipleErrorResponse;
+        }
     }
 }
