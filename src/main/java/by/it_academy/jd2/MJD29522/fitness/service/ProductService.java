@@ -22,10 +22,9 @@ import java.util.UUID;
 
 public class ProductService implements IProductService {
 
+
     private final IProductRepository productRepository;
     private final ConversionService conversionService;
-   // private final ProductToEntity productToEntity;
-   // private final ProductToDTO productToDTO;
 
     public ProductService(IProductRepository productRepository, ConversionService conversionService) {
         this.productRepository = productRepository;
@@ -51,13 +50,11 @@ public class ProductService implements IProductService {
         }
         validate(productCreateDTO);
         Optional<ProductEntity> findEntity = productRepository.findById(uuid);
-
         if (!findEntity.isPresent()) {
-            throw new SingleErrorResponse("Продукта с id " + uuid + " для обновления не найдено!");
+            throw new SingleErrorResponse("Продукта с id " + uuid + " для обновления не найдено");
         } else {
             ProductEntity entity = findEntity.get();
             if (entity.getDtUpdate().isEqual(dtUpdate) && entity.getUuid().equals(uuid)) {
-                entity.setDtUpdate(LocalDateTime.now().withNano(3));
                 entity.setTitle(productCreateDTO.getTitle());
                 entity.setWeight(productCreateDTO.getWeight());
                 entity.setCalories(productCreateDTO.getCalories());
@@ -99,10 +96,10 @@ public class ProductService implements IProductService {
         if (productCreateDTO.getTitle() == null || productCreateDTO.getTitle().isBlank()){
             multipleErrorResponse.setErrors(new Error("Title", "Поле не заполнено"));
         }
-        if (productCreateDTO.getWeight() <= 0 ){     //|| productCreateDTO.getWeight()) {
+        if (productCreateDTO.getWeight() <= 0 && productCreateDTO.getWeight() % 1 == 0){
             multipleErrorResponse.setErrors(new Error("Weight", "Введите целое положительное число"));
         }
-        if (productCreateDTO.getCalories() <= 0 ) {
+        if (productCreateDTO.getCalories() <= 0 && productCreateDTO.getCalories() % 1 == 0) {
             multipleErrorResponse.setErrors(new Error("Calories", "Введите целое положительное число"));
         }
         if (productCreateDTO.getProteins() <= 0 ) {
@@ -114,10 +111,8 @@ public class ProductService implements IProductService {
         if (productCreateDTO.getCarbohydrates() <= 0 ) {
             multipleErrorResponse.setErrors(new Error("Carbohydrates", "Введите корректное значение. Например: 50.2"));
         }
-
         if (!multipleErrorResponse.getErrors().isEmpty()) {
             throw multipleErrorResponse;
         }
-
     }
 }

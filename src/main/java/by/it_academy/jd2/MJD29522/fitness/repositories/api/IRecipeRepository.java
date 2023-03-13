@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface IRecipeRepository extends ListCrudRepository<RecipeEntity, UUID> {
 
     Page<RecipeEntity> findAll(Pageable pageable);
+    RecipeEntity findByTitle(String title);
 }

@@ -105,6 +105,11 @@ public class UserService implements IUserService {
         if (userCreateDTO.getMail() == null || userCreateDTO.getMail().isBlank()) {
             multipleErrorResponse.setErrors(new Error("MAIL", "Поле не заполнено"));
         }
+        UserEntity userEntity = userRepository.findByMail(userCreateDTO.getMail());
+        if(userEntity != null){
+            multipleErrorResponse.setErrors(new Error("MAIL","Пользователь с таким MAIL уже существует"));
+        }
+
         if (userCreateDTO.getPassword() == null || userCreateDTO.getPassword().isBlank()) {
             multipleErrorResponse.setErrors(new Error("Password", "Поле не заполнено"));
         }

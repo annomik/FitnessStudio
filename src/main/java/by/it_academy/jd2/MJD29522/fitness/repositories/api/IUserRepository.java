@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface IUserRepository extends ListCrudRepository<UserEntity, UUID> {
 
     Page<UserEntity> findAll(Pageable pageable);
+    UserEntity findByMail(String mail);
 }

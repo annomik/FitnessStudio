@@ -16,4 +16,5 @@ public interface IRecipeService {
     PageDTO<RecipeDTO> getPage(int numberOfPage, int size);
 
 
+    void validate(RecipeCreateDTO recipeCreateDTO);
 }

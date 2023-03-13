@@ -1,20 +1,20 @@
-package by.it_academy.jd2.MJD29522.fitness.service.converters;
-
-import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductCreateDTO;
-//import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeCreateDTO;
+//package by.it_academy.jd2.MJD29522.fitness.service.converters;
+//
+//import by.it_academy.jd2.MJD29522.fitness.core.dto.food.CompositionDTO;
+//import by.it_academy.jd2.MJD29522.fitness.core.dto.food.CompositionWithAllParametersDTO;
+//import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductCreateDTO;
+//import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductDTO;
 //import by.it_academy.jd2.MJD29522.fitness.entity.CompositionEntity;
 //import by.it_academy.jd2.MJD29522.fitness.entity.ProductEntity;
-//import by.it_academy.jd2.MJD29522.fitness.entity.RecipeEntity;
 //import org.springframework.core.convert.converter.Converter;
 //import org.springframework.stereotype.Component;
 //
-//import java.time.LocalDateTime;
 //import java.util.UUID;
 //
 //@Component
-//public class CompositionToEntity implements Converter<CompositionDTO, CompositionEntity> {
+//public class ProductWithAllParametersToDTO implements Converter<ProductEntity, ProductDTO> {
 //
-//    @Override
+//
 //    public CompositionEntity convert(CompositionDTO compositionDTO) {
 //        ProductCreateDTO product = compositionDTO.getProduct();
 //        int caloriesOfComposition =  compositionDTO.getWeight()* product.getCalories()/ product.getWeight();
@@ -30,4 +30,10 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductCreateDTO;
 //                carbohydratesOfComposition);
 //    }
 //
+//    @Override
+//    public ProductDTO convert(ProductEntity productEntity) {
+//
+//
+//        return new ProductDTO();
+//    }
 //}

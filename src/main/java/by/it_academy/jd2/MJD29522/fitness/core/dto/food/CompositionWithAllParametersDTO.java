@@ -1,10 +1,11 @@
 package by.it_academy.jd2.MJD29522.fitness.core.dto.food;
 
+
 public class CompositionWithAllParametersDTO {
-       //List?
+
     private ProductDTO product;
     private int weight;
-    private int calories;
+    private double calories;   //!!!
     private double proteins;
     private double fats;
     private double carbohydrates;
@@ -12,9 +13,8 @@ public class CompositionWithAllParametersDTO {
     public CompositionWithAllParametersDTO() {
     }
 
-    public CompositionWithAllParametersDTO(ProductDTO product,
-                                           int weight, int calories,
-                                           double proteins,
+    public CompositionWithAllParametersDTO(ProductDTO product, int weight,
+                                           double calories, double proteins,
                                            double fats, double carbohydrates) {
         this.product = product;
         this.weight = weight;
@@ -40,11 +40,11 @@ public class CompositionWithAllParametersDTO {
         this.weight = weight;
     }
 
-    public int getCalories() {
+    public double getCalories() {
         return calories;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(double calories) {
         this.calories = calories;
     }
 
