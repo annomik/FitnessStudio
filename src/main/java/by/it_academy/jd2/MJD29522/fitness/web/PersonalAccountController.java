@@ -3,7 +3,9 @@ package by.it_academy.jd2.MJD29522.fitness.web;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserLoginDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserRegistrationDTO;
+import by.it_academy.jd2.MJD29522.fitness.service.UserHolder;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
+import by.it_academy.jd2.MJD29522.fitness.web.utils.JwtTokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,16 +35,24 @@ public class PersonalAccountController {
          return ResponseEntity.status(HttpStatus.OK).build();
        }
 
+//    @RequestMapping(path = "/login", method = RequestMethod.POST)
+//    public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO) {
+//        //service.login(userLoginDTO);
+//        return ResponseEntity.status(HttpStatus.OK).body(service.login(userLoginDTO));
+//    }
+
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO) {
-       // service.login(userLoginDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(service.login(userLoginDTO));
+    public  ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO) {
+        UserDTO userDTO = service.login(userLoginDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(JwtTokenUtil.generateAccessToken(userDTO));
     }
 
     //Получить информацию о себе
     @RequestMapping(path = "/me", method = RequestMethod.GET)
-    public ResponseEntity<UserDTO> getCard(@PathVariable("me") UUID uuid){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getCard(uuid));
+    public ResponseEntity<?> getCard(){
+        UserHolder userHolder = new UserHolder();
+        return ResponseEntity.status(HttpStatus.OK).body(userHolder.getUser());
+
     }
 
 }

@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -53,20 +51,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/registration").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users/me").authenticated()
-                        .requestMatchers("/api/v1/users/**").authenticated()
-                        .requestMatchers("/api/v1/users/**").hasRole("ROLE_ADMIN")
                         .requestMatchers("/api/v1/product/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"/api/v1/product/**").hasRole("ROLE_ADMIN")
                         .requestMatchers("/api/v1/recipe/**").authenticated()
                         .requestMatchers("/api/v1/users/**").hasRole("ROLE_ADMIN")
-
-//                        .antMatchers("/api/v1/users/registration").permitAll()
-//                        .antMatchers("/api/v1/users/verification").permitAll()
-//                        .antMatchers("/api/v1/users/me").authenticated()
-//                        .antMatchers("/api/v1/product/**").authenticated()
-//                        .antMatchers("/api/v1/recipe/**").authenticated()
-//                        .antMatchers("/api/v1/users/login").permitAll()
-//                        .antMatchers("/api/v1/users/**").hasRole("ROLE_ADMIN")
-                         .anyRequest().authenticated()
+                        .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults());
         // Add JWT token filter

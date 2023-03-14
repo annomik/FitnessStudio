@@ -13,9 +13,7 @@ import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
 import by.it_academy.jd2.MJD29522.fitness.service.api.ISendingMailService;
 import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
-import by.it_academy.jd2.MJD29522.fitness.web.utils.JwtTokenUtil;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -79,6 +77,12 @@ public class PersonalAccountService implements IPersonalAccountService {
     }
 
     @Override
+    public UserDTO aboutMe(String mail) {
+        UserEntity entityByMail = personalAccountRepository.findByMail(mail);
+        return conversionService.convert(entityByMail, UserDTO.class);
+    }
+
+    @Override
     public void verify(String verificationCode, String mail) {
         UserEntity userEntity = personalAccountRepository.findByMail(mail);
         if(userEntity == null){
@@ -93,16 +97,18 @@ public class PersonalAccountService implements IPersonalAccountService {
     }
 
     @Override
-    public String login(UserLoginDTO userLoginDTO) {
+    public UserDTO login(UserLoginDTO userLoginDTO) {
         UserEntity userEntity = personalAccountRepository.findByMail(userLoginDTO.getMail());
         if(userEntity == null){
             throw new SingleErrorResponse("Такого пользователя не существует");
         }
         if ( !encoder.matches( userEntity.getPassword(), (userLoginDTO.getPassword()) )){
-            return JwtTokenUtil.generateAccessToken(userEntity);
+           // return JwtTokenUtil.generateAccessToken(userEntity);
+            return conversionService.convert(userEntity, UserDTO.class );
         } else {
             throw new SingleErrorResponse("Неправильно введены данные");
         }
+
     }
 
     @Override

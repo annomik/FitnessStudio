@@ -5,6 +5,7 @@ import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
 import io.jsonwebtoken.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class JwtTokenUtil {
@@ -12,13 +13,32 @@ public class JwtTokenUtil {
     private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
     private static final String jwtIssuer = "ITAcademy";
 
-    public static String generateAccessToken(UserEntity user) {
-        return generateAccessToken(user.getMail());
+//    public static String generateAccessToken(UserEntity user) {
+//        return generateAccessToken(user.getMail());
+////    }
+//
+//    public static String generateAccessToken(UserDTO user) {
+//        return generateAccessToken(user.getMail());
+//    }
+
+    public static String generateAccessToken( UserDTO userDTO) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("role", userDTO.getRole());
+        map.put("uuid", userDTO.getUuid());
+        return  Jwts.builder()
+                .setSubject(userDTO.getMail())
+                .addClaims(map)
+                .setIssuer(jwtIssuer)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7))) // 1 week
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
-    public static String generateAccessToken(String name) {
+    public static String generateAccessToken(String mail ) {
         return Jwts.builder()
-                .setSubject(name)
+                .setSubject(mail)
+              //  .setPayload(user.getRole().toString())
                 .setIssuer(jwtIssuer)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7))) // 1 week
