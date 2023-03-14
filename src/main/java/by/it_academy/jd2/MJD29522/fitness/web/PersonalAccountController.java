@@ -35,16 +35,14 @@ public class PersonalAccountController {
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO) {
-        service.login(userLoginDTO);
-        return  ResponseEntity.status(HttpStatus.OK).build();
+       // service.login(userLoginDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(service.login(userLoginDTO));
     }
 
     //Получить информацию о себе
     @RequestMapping(path = "/me", method = RequestMethod.GET)
     public ResponseEntity<UserDTO> getCard(@PathVariable("me") UUID uuid){
-
         return ResponseEntity.status(HttpStatus.OK).body(service.getCard(uuid));
     }
-
 
 }

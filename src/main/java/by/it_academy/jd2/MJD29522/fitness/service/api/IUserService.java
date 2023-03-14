@@ -15,6 +15,8 @@ public interface IUserService {
 
     void update(UUID uuid, LocalDateTime dtUpdate, UserCreateDTO userCreateDTO);
 
+    UserDTO getUser(String mail);
+
     PageDTO<UserDTO> getPage(int numberOfPage, int size);
 
 

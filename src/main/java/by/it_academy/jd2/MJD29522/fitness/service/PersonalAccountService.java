@@ -10,32 +10,61 @@ import by.it_academy.jd2.MJD29522.fitness.repositories.api.IPersonalAccountRepos
 import by.it_academy.jd2.MJD29522.fitness.entity.StatusEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
-import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToDTO;
+import by.it_academy.jd2.MJD29522.fitness.service.api.ISendingMailService;
 import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
+import by.it_academy.jd2.MJD29522.fitness.web.utils.JwtTokenUtil;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PersonalAccountService implements IPersonalAccountService {
 
     private final IPersonalAccountRepository personalAccountRepository;
     private final  IConversionToEntity conversionToEntity;
-    private final IConversionToDTO conversionToDTO;
+    private final ConversionService conversionService;
+    private final ISendingMailService mailService;
+    private final PasswordEncoder encoder;
+   // private final JwtTokenUtil tokenUtil;
+
+    private static final String EMAIL_REGEX =  "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
+            "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     public PersonalAccountService(IPersonalAccountRepository personalAccountRepository,
                                   IConversionToEntity conversionToEntity,
-                                  IConversionToDTO conversionToDTO) {
+                                  ConversionService conversionService,
+                                  ISendingMailService mailService,
+                                  PasswordEncoder encoder
+                                 // JwtTokenUtil tokenUtil
+    ) {
         this.personalAccountRepository = personalAccountRepository;
         this.conversionToEntity = conversionToEntity;
-        this.conversionToDTO = conversionToDTO;
+        this.conversionService = conversionService;
+        this.mailService = mailService;
+        this.encoder = encoder;
+        //this.tokenUtil = tokenUtil;
     }
 
     @Override
     public boolean save(UserRegistrationDTO userRegistrationDTO) {
+        if(userRegistrationDTO == null){
+            throw new SingleErrorResponse("Введите данные");
+        }
         validate(userRegistrationDTO);
         UserEntity entity = conversionToEntity.convertToEntity(userRegistrationDTO);
+        String encode = encoder.encode(entity.getPassword());
+        entity.setPassword(encode);
         personalAccountRepository.save(entity);
+        String verificationCode = entity.getVerificationCode();
+        String message = "Спасибо за регистрацию в нашем приложении!" +
+                " Для успешной активации Вашего аккаунта введите Ваш почтовый адрес и код: " + entity.getVerificationCode();
+        mailService.send(userRegistrationDTO.getMail(), "Активация в Fitness Studio", message);
         return true;
     }
 
@@ -46,7 +75,7 @@ public class PersonalAccountService implements IPersonalAccountService {
             throw new SingleErrorResponse("Пользователя с id " + uuid + " нет базе данных!");
         }
         UserEntity userEntity = findUserEntity.get();
-        return conversionToDTO.convertToDTO(userEntity);
+        return conversionService.convert(userEntity, UserDTO.class);
     }
 
     @Override
@@ -59,17 +88,18 @@ public class PersonalAccountService implements IPersonalAccountService {
                 && userEntity.getVerificationCode().equals(verificationCode)) {
             userEntity.setStatusEntity(new StatusEntity(UserStatus.ACTIVATED));
             personalAccountRepository.save(userEntity);
+          //  personalAccountRepository.deleteByVerificationCode(verificationCode);
         }  else throw new SingleErrorResponse("Проверьте правильность верификационного кода");
     }
 
     @Override
-    public void login(UserLoginDTO userLoginDTO) {
+    public String login(UserLoginDTO userLoginDTO) {
         UserEntity userEntity = personalAccountRepository.findByMail(userLoginDTO.getMail());
         if(userEntity == null){
             throw new SingleErrorResponse("Такого пользователя не существует");
         }
-        if (userEntity.getMail().equals(userLoginDTO.getMail()) && userEntity.getPassword().equals(userLoginDTO.getPassword())){
-          //  System.out.println(" Вход выполнен");
+        if ( !encoder.matches( userEntity.getPassword(), (userLoginDTO.getPassword()) )){
+            return JwtTokenUtil.generateAccessToken(userEntity);
         } else {
             throw new SingleErrorResponse("Неправильно введены данные");
         }
@@ -79,11 +109,15 @@ public class PersonalAccountService implements IPersonalAccountService {
     public void validate(UserRegistrationDTO userRegistrationDTO) {
         MultipleErrorResponse multipleErrorResponse = new MultipleErrorResponse();
 
-        if (userRegistrationDTO.getFio() == null || userRegistrationDTO.getFio().isBlank()){
-            multipleErrorResponse.setErrors(new Error("FIO", "Поле не заполнено"));
-        }
+        Matcher matcher = EMAIL_PATTERN.matcher(userRegistrationDTO.getMail());
         if (userRegistrationDTO.getMail() == null || userRegistrationDTO.getMail().isBlank()) {
             multipleErrorResponse.setErrors(new Error("MAIL", "Поле не заполнено"));
+        }
+        if( !matcher.matches()){
+            multipleErrorResponse.setErrors(new Error("MAIL","Введите корректный EMAIL"));
+        }
+        if (userRegistrationDTO.getFio() == null || userRegistrationDTO.getFio().isBlank()){
+            multipleErrorResponse.setErrors(new Error("FIO", "Поле не заполнено"));
         }
         UserEntity userEntity = personalAccountRepository.findByMail(userRegistrationDTO.getMail());
         if(!(userEntity == null)){

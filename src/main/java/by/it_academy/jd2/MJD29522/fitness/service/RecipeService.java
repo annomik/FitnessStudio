@@ -21,11 +21,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static java.math.BigDecimal.ROUND_HALF_EVEN;
 
 public class RecipeService implements IRecipeService {
 
@@ -112,7 +115,7 @@ public class RecipeService implements IRecipeService {
         );
     }
 
-    private List<RecipeDTO>  convertListRecipeEntityToDTO(Page<RecipeEntity> allEntity){
+    private List<RecipeDTO> convertListRecipeEntityToDTO(Page<RecipeEntity> allEntity){
         List<RecipeDTO> content = new ArrayList<>();
         for (RecipeEntity recipeEntity: allEntity) {
             int weightOfRecipe = 0;
@@ -150,10 +153,10 @@ public class RecipeService implements IRecipeService {
                     recipeEntity.getTitle(),
                     composition,
                     weightOfRecipe,
-                    BigDecimal.valueOf(caloriesOfRecipe),
-                    BigDecimal.valueOf(proteinsOfRecipe),
-                    BigDecimal.valueOf(fatsOfRecipe),
-                    BigDecimal.valueOf(carbohydratesOfRecipe)
+                    BigDecimal.valueOf(caloriesOfRecipe).setScale(2, RoundingMode.HALF_UP),
+                    BigDecimal.valueOf(proteinsOfRecipe).setScale(2, RoundingMode.HALF_UP),
+                    BigDecimal.valueOf(fatsOfRecipe).setScale(2, RoundingMode.HALF_UP),
+                    BigDecimal.valueOf(carbohydratesOfRecipe).setScale(2, RoundingMode.HALF_UP)
             );
             content.add(recipeDTO);
         }

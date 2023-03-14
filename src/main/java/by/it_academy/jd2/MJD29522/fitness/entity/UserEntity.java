@@ -79,21 +79,6 @@ public class UserEntity {
         this.roleEntity = roleEntity;
     }
 
-    //UserDTO
-    public UserEntity(UUID uuid, LocalDateTime dtCreate,
-                      LocalDateTime dtUpdate, String mail,
-                      String fio,
-                      RoleEntity roleEntity,
-                      StatusEntity statusEntity) {
-        this.uuid = uuid;
-        this.dtCreate = dtCreate;
-        this.dtUpdate = dtUpdate;
-        this.mail = mail;
-        this.fio = fio;
-        this.roleEntity = roleEntity;
-        this.statusEntity = statusEntity;
-    }
-
     //UserCreateDTO
     public UserEntity(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate,
                       String mail, String fio, StatusEntity statusEntity, String password,

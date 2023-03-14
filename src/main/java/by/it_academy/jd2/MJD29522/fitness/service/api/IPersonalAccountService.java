@@ -14,7 +14,7 @@ public interface IPersonalAccountService {
 
     void verify(String verificationCode, String mail);
 
-    void login(UserLoginDTO userLoginDTO);
+    String login(UserLoginDTO userLoginDTO);
 
     void validate(UserRegistrationDTO userRegistrationDTO);
 

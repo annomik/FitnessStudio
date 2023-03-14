@@ -2,14 +2,14 @@ package by.it_academy.jd2.MJD29522.fitness.service.converters;
 
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
-import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToDTO;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConversionToDTO implements IConversionToDTO {
+public class UserToDTO implements Converter<UserEntity, UserDTO> {
 
     @Override
-    public UserDTO convertToDTO(UserEntity userEntity) {
+    public UserDTO convert(UserEntity userEntity) {
 
         return new UserDTO(userEntity.getUuid(),
                 userEntity.getDtCreate(), //.truncatedTo(ChronoUnit.MILLIS),
@@ -20,6 +20,4 @@ public class ConversionToDTO implements IConversionToDTO {
                 userEntity.getStatusEntity().getStatus()
         );
     }
-
-
 }
