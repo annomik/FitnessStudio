@@ -6,12 +6,13 @@ import by.it_academy.jd2.MJD29522.fitness.service.converters.serializers.LocalDa
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserDTO {
 
     private UUID uuid ;
-    //@JsonDeserialize(using = LongToLDTDeserializer.class)
+
     @JsonSerialize(using = LocalDateTimeToLongSerializer.class)
     private LocalDateTime dtCreate;
 
@@ -98,5 +99,29 @@ public class UserDTO {
         return fio;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return Objects.equals(uuid, userDTO.uuid) && Objects.equals(dtCreate, userDTO.dtCreate) && Objects.equals(dtUpdate, userDTO.dtUpdate) && Objects.equals(mail, userDTO.mail) && Objects.equals(fio, userDTO.fio) && role == userDTO.role && status == userDTO.status;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, dtCreate, dtUpdate, mail, fio, role, status);
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "uuid=" + uuid +
+                ", dtCreate=" + dtCreate +
+                ", dtUpdate=" + dtUpdate +
+                ", mail='" + mail + '\'' +
+                ", fio='" + fio + '\'' +
+                ", role=" + role +
+                ", status=" + status +
+                '}';
+    }
 }

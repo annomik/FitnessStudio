@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,23 +18,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-  //  private final UserDetailsManager userManager;
     private final IUserService userService;
 
-//    public JwtFilter(UserDetailsManager userManager, IUserService userService) {
-//        this.userManager = userManager;
-//        this.userService = userService;
-//    }
-
-    public JwtFilter(IUserService userService) {
-        this.userService = userService;
-    }
+    public JwtFilter(IUserService userService) { this.userService = userService;  }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -62,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String s = userDTO.getRole().toString();
         String role ="ROLE_"+s;
         roles.add(new SimpleGrantedAuthority(role));
-        roles.size();
+      //  roles.size();
 
         UsernamePasswordAuthenticationToken
                 authentication = new UsernamePasswordAuthenticationToken(
@@ -79,14 +69,4 @@ public class JwtFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }
-
-//        UsernamePasswordAuthenticationToken
-//                authentication = new UsernamePasswordAuthenticationToken(
-//                userDetails, null,
-//                userDetails == null ?
-//                        List.of() : userDetails.getAuthorities()
-//        );
-
-
-
 }

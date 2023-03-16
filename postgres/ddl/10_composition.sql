@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS fitness.composition
     weight integer,
     product_uuid uuid,
     CONSTRAINT composition_pkey1 PRIMARY KEY (uuid),
-    CONSTRAINT fkfbchfkak0b83eox5jt0547fhi FOREIGN KEY (product_uuid)
+    CONSTRAINT composition_constraint FOREIGN KEY (product_uuid)
         REFERENCES fitness.product (uuid) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION

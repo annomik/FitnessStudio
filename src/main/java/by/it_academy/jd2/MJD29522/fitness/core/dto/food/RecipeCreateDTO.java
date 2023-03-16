@@ -1,6 +1,7 @@
 package by.it_academy.jd2.MJD29522.fitness.core.dto.food;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RecipeCreateDTO {
 
@@ -27,5 +28,24 @@ public class RecipeCreateDTO {
         return composition;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RecipeCreateDTO that = (RecipeCreateDTO) o;
+        return Objects.equals(title, that.title) && Objects.equals(composition, that.composition);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, composition);
+    }
+
+    @Override
+    public String toString() {
+        return "RecipeCreateDTO{" +
+                "title='" + title + '\'' +
+                ", composition=" + composition +
+                '}';
+    }
 }

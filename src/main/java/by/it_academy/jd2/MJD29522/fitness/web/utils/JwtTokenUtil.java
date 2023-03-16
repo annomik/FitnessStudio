@@ -1,7 +1,6 @@
 package by.it_academy.jd2.MJD29522.fitness.web.utils;
 
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
-import by.it_academy.jd2.MJD29522.fitness.entity.UserEntity;
 import io.jsonwebtoken.*;
 
 import java.util.Date;
@@ -11,17 +10,13 @@ import java.util.concurrent.TimeUnit;
 public class JwtTokenUtil {
 
     private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
-    private static final String jwtIssuer = "ITAcademy";
+    private static final String jwtIssuer = "MyFitnessStudioHanna";
 
-//    public static String generateAccessToken(UserEntity user) {
-//        return generateAccessToken(user.getMail());
-////    }
-//
 //    public static String generateAccessToken(UserDTO user) {
 //        return generateAccessToken(user.getMail());
 //    }
 
-    public static String generateAccessToken( UserDTO userDTO) {
+    public static String generateAccessToken(UserDTO userDTO) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("role", userDTO.getRole());
         map.put("uuid", userDTO.getUuid());
@@ -35,7 +30,7 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    public static String generateAccessToken(String mail ) {
+    public static String generateAccessToken(String mail) {
         return Jwts.builder()
                 .setSubject(mail)
               //  .setPayload(user.getRole().toString())

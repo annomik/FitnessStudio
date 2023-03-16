@@ -4,9 +4,6 @@ import java.util.Objects;
 
 public class CompositionDTO {
 
-//    @JsonIgnore
-//    private UUID uuid ;
-
     private ProductWithUUID product;
     private int weight;
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class RecipeDTO {
@@ -90,40 +91,48 @@ public class RecipeDTO {
     public int getWeight() {
         return weight;
     }
-
     public void setWeight(int weight) {
         this.weight = weight;
     }
-
     public BigDecimal getCalories() {
         return calories;
     }
-
-    public void setCalories(BigDecimal calories) {
-        this.calories = calories;
-    }
-
     public BigDecimal getProteins() {
         return proteins;
     }
-
-    public void setProteins(BigDecimal proteins) {
-        this.proteins = proteins;
-    }
-
     public BigDecimal getFats() {
         return fats;
     }
-
-    public void setFats(BigDecimal fats) {
-        this.fats = fats;
-    }
-
     public BigDecimal getCarbohydrates() {
         return carbohydrates;
     }
 
-    public void setCarbohydrates(BigDecimal carbohydrates) {
-        this.carbohydrates = carbohydrates;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RecipeDTO recipeDTO = (RecipeDTO) o;
+        return weight == recipeDTO.weight && Objects.equals(uuid, recipeDTO.uuid) && Objects.equals(dtCreate, recipeDTO.dtCreate) && Objects.equals(dtUpdate, recipeDTO.dtUpdate) && Objects.equals(title, recipeDTO.title) && Objects.equals(composition, recipeDTO.composition) && Objects.equals(calories, recipeDTO.calories) && Objects.equals(proteins, recipeDTO.proteins) && Objects.equals(fats, recipeDTO.fats) && Objects.equals(carbohydrates, recipeDTO.carbohydrates);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, dtCreate, dtUpdate, title, composition, weight, calories, proteins, fats, carbohydrates);
+    }
+
+    @Override
+    public String toString() {
+        return "RecipeDTO{" +
+                "uuid=" + uuid +
+                ", dtCreate=" + dtCreate +
+                ", dtUpdate=" + dtUpdate +
+                ", title='" + title + '\'' +
+                ", composition=" + composition +
+                ", weight=" + weight +
+                ", calories=" + calories +
+                ", proteins=" + proteins +
+                ", fats=" + fats +
+                ", carbohydrates=" + carbohydrates +
+                '}';
     }
 }

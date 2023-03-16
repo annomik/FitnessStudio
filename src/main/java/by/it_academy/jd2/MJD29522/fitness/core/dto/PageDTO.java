@@ -102,7 +102,6 @@ public class PageDTO<T> {
         this.size = size;
     }
 
-
     public boolean isLast() {
         return last;
     }

@@ -102,13 +102,13 @@ public class ProductService implements IProductService {
         if (productCreateDTO.getCalories() <= 0 && productCreateDTO.getCalories() % 1 == 0) {
             multipleErrorResponse.setErrors(new Error("Calories", "Введите целое положительное число"));
         }
-        if (productCreateDTO.getProteins() <= 0 ) {
+        if (productCreateDTO.getProteins() < 0 ) {
             multipleErrorResponse.setErrors(new Error("Proteins", "Введите корректное значение. Например: 4.2"));
         }
-        if (productCreateDTO.getFats() <= 0 ) {
+        if (productCreateDTO.getFats() < 0 ) {
             multipleErrorResponse.setErrors(new Error("Fats", "Введите корректное значение. Например: 4.2"));
         }
-        if (productCreateDTO.getCarbohydrates() <= 0 ) {
+        if (productCreateDTO.getCarbohydrates() < 0 ) {
             multipleErrorResponse.setErrors(new Error("Carbohydrates", "Введите корректное значение. Например: 50.2"));
         }
         if (!multipleErrorResponse.getErrors().isEmpty()) {

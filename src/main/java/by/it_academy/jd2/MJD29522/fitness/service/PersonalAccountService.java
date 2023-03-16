@@ -28,7 +28,6 @@ public class PersonalAccountService implements IPersonalAccountService {
     private final ConversionService conversionService;
     private final ISendingMailService mailService;
     private final PasswordEncoder encoder;
-   // private final JwtTokenUtil tokenUtil;
 
     private static final String EMAIL_REGEX =  "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
             "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -39,14 +38,12 @@ public class PersonalAccountService implements IPersonalAccountService {
                                   ConversionService conversionService,
                                   ISendingMailService mailService,
                                   PasswordEncoder encoder
-                                 // JwtTokenUtil tokenUtil
     ) {
         this.personalAccountRepository = personalAccountRepository;
         this.conversionToEntity = conversionToEntity;
         this.conversionService = conversionService;
         this.mailService = mailService;
         this.encoder = encoder;
-        //this.tokenUtil = tokenUtil;
     }
 
     @Override
@@ -91,6 +88,7 @@ public class PersonalAccountService implements IPersonalAccountService {
         if (userEntity.getMail().equals(mail)
                 && userEntity.getVerificationCode().equals(verificationCode)) {
             userEntity.setStatusEntity(new StatusEntity(UserStatus.ACTIVATED));
+            userEntity.setVerificationCode(null);
             personalAccountRepository.save(userEntity);
           //  personalAccountRepository.deleteByVerificationCode(verificationCode);
         }  else throw new SingleErrorResponse("Проверьте правильность верификационного кода");
@@ -102,13 +100,14 @@ public class PersonalAccountService implements IPersonalAccountService {
         if(userEntity == null){
             throw new SingleErrorResponse("Такого пользователя не существует");
         }
-        if ( !encoder.matches( userEntity.getPassword(), (userLoginDTO.getPassword()) )){
-           // return JwtTokenUtil.generateAccessToken(userEntity);
-            return conversionService.convert(userEntity, UserDTO.class );
-        } else {
-            throw new SingleErrorResponse("Неправильно введены данные");
+        if ( !encoder.matches(userLoginDTO.getPassword(),userEntity.getPassword())){
+            throw new SingleErrorResponse("Неверный пароль");
         }
-
+        if( !userEntity.getStatusEntity().getStatus().equals(UserStatus.ACTIVATED)){
+            throw new SingleErrorResponse("Ваш аккаунт должен быть активирован!");
+        }
+        // return JwtTokenUtil.generateAccessToken(userEntity);
+        return conversionService.convert(userEntity, UserDTO.class );
     }
 
     @Override

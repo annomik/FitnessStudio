@@ -5,6 +5,7 @@ import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
@@ -100,5 +101,30 @@ public class UserCreateDTO {
         return fio;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserCreateDTO that = (UserCreateDTO) o;
+        return Objects.equals(uuid, that.uuid) && Objects.equals(dtCreate, that.dtCreate) && Objects.equals(dtUpdate, that.dtUpdate) && Objects.equals(mail, that.mail) && Objects.equals(fio, that.fio) && role == that.role && status == that.status && Objects.equals(password, that.password);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, dtCreate, dtUpdate, mail, fio, role, status, password);
+    }
+
+    @Override
+    public String toString() {
+        return "UserCreateDTO{" +
+                "uuid=" + uuid +
+                ", dtCreate=" + dtCreate +
+                ", dtUpdate=" + dtUpdate +
+                ", mail='" + mail + '\'' +
+                ", fio='" + fio + '\'' +
+                ", role=" + role +
+                ", status=" + status +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

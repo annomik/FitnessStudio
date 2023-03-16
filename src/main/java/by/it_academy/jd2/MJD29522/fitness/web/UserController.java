@@ -24,12 +24,8 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addNewUser(@RequestBody UserCreateDTO userCreateDTO) {
-
-       // if (userService.addNewUser(userCreateDTO)) {
         userService.addNewUser(userCreateDTO);
-//        return ResponseEntity.status(HttpStatus.CREATED).build();
-//        }
-       return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @RequestMapping(method = RequestMethod.GET)
