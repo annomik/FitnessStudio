@@ -25,7 +25,6 @@ public class RecipeController {
         recipeService.addNewRecipe(recipeCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<PageDTO<RecipeDTO>> getPage(
             @RequestParam(name = "page", required = false, defaultValue = "0") int numberOfPage,
