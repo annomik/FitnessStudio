@@ -14,7 +14,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/recipe")
 public class RecipeController {
-
     private final IRecipeService recipeService;
 
     public RecipeController(IRecipeService recipeService) {
