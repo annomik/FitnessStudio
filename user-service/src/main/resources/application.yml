@@ -1,0 +1,31 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://db:5432/root
+    username: root
+    password: root
+  mail:
+    default-encoding: UTF-8
+    host: smtp.mail.ru
+    port: 465
+    username: mikulichmail@mail.ru
+    password: jzE60bKnTdeDNm0mJpWL
+    test-connection: true
+    protocol: smtps
+properties:
+  mail:
+    smtp:
+      starttls:
+        enable: true
+        required: true
+      auth: true
+      ssl:
+        trust:smtp.mail.ru
+jwt:
+  secret: NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw
+  issuer: MyFitnessStudioHanna
