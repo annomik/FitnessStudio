@@ -52,20 +52,12 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(requests -> requests
                                 .requestMatchers(HttpMethod.GET,"/product").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/recipe").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/product/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST,"/product").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/recipe").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/recipe/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST,"/recipe").hasRole("ADMIN")
-
-//                        .requestMatchers(HttpMethod.GET,"/product").permitAll()
-//                        .requestMatchers(HttpMethod.POST,"/product/**").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.PUT,"/product/**").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.GET,"/recipe").authenticated()
-//                        .requestMatchers(HttpMethod.POST,"/recipe/**").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.PUT,"/recipe/**").hasRole("ADMIN")
-                        //.requestMatchers("/api/v1/recipe/**").hasRole("ROLE_ADMIN")
-
+                                .requestMatchers("/recipe").hasRole("ADMIN")
+//                         .requestMatchers(HttpMethod.POST,"/recipe").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
 

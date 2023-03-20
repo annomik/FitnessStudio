@@ -32,7 +32,7 @@ public class UserService implements IUserService {
     private final IPersonalAccountService personalAccountService;
     private final ConversionService conversionService;
     private final IConversionToEntity conversionToEntity;
-    private PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     private static final String EMAIL_REGEX =  "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
             "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -54,6 +54,10 @@ public class UserService implements IUserService {
     public void addNewUser(UserCreateDTO userCreateDTO) {
         if(userCreateDTO == null){
             throw new SingleErrorResponse("Введите данные");
+        }
+        UserEntity userEntity = userRepository.findByMail(userCreateDTO.getMail());
+        if(userEntity != null){
+            throw new SingleErrorResponse(("Пользователь с таким электронным адресом уже существует"));
         }
         validate(userCreateDTO);
         UserEntity entity = conversionToEntity.convertToEntity(userCreateDTO);
@@ -96,9 +100,9 @@ public class UserService implements IUserService {
     @Override
     public UserDTO getUserByMail(String mail) {
         UserEntity userEntity = userRepository.findByMail(mail);
-        if(userEntity == null){
-            throw new SingleErrorResponse("Пользователя с mail " + mail + " нет базе данных!");
-        }
+//        if(userEntity == null){
+//            throw new SingleErrorResponse("Пользователя с mail " + mail + " нет базе данных!");
+//        }
         return conversionService.convert(userEntity, UserDTO.class);
     }
 
@@ -135,11 +139,6 @@ public class UserService implements IUserService {
         if (userCreateDTO.getMail() == null || userCreateDTO.getMail().isBlank()) {
             multipleErrorResponse.setErrors(new Error("MAIL", "Поле не заполнено"));
         }
-        UserEntity userEntity = userRepository.findByMail(userCreateDTO.getMail());
-        if(userEntity != null){
-            multipleErrorResponse.setErrors(new Error("MAIL","Пользователь с таким MAIL уже существует"));
-        }
-
         if (userCreateDTO.getPassword() == null || userCreateDTO.getPassword().isBlank()) {
             multipleErrorResponse.setErrors(new Error("Password", "Поле не заполнено"));
         }

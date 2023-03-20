@@ -20,10 +20,11 @@ public class JwtTokenUtil {
 
     public String generateAccessToken(UserDTO userDTO) {
         HashMap<String, Object> map = new HashMap<>();
+        map.put("mail", userDTO.getMail());
         map.put("role", userDTO.getRole());
         map.put("uuid", userDTO.getUuid());
         return  Jwts.builder()
-                .setSubject(userDTO.getMail())
+                //.setSubject(userDTO.getMail())
                 .addClaims(map)
                 .setIssuer(property.getIssuer())
                 .setIssuedAt(new Date())
@@ -32,16 +33,16 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    public  String generateAccessToken(String mail) {
-        return Jwts.builder()
-                .setSubject(mail)
-              //  .setPayload(user.getRole().toString())
-                .setIssuer(property.getIssuer())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7))) // 1 week
-                .signWith(SignatureAlgorithm.HS512, property.getSecret())
-                .compact();
-    }
+//    public  String generateAccessToken(String mail) {
+//        return Jwts.builder()
+//                .setSubject(mail)
+//              //  .setPayload(user.getRole().toString())
+//                .setIssuer(property.getIssuer())
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7))) // 1 week
+//                .signWith(SignatureAlgorithm.HS512, property.getSecret())
+//                .compact();
+//    }
 
     public String getUserMail(String token) {
         Claims claims = Jwts.parser()

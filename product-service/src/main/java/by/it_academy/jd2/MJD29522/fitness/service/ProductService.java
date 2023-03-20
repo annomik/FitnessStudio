@@ -99,7 +99,7 @@ public class ProductService implements IProductService {
             multipleErrorResponse.setErrors(new Error("Title", "Поле не заполнено"));
         }
         if (productCreateDTO.getWeight() <= 0 && productCreateDTO.getWeight() % 1 == 0){
-            multipleErrorResponse.setErrors(new Error("Weight", "Поле \"Weight\" должно быть целым положительным числом"));
+            multipleErrorResponse.setErrors(new Error("Weight", "Поле Weight должно быть целым положительным числом"));
         }
         if (productCreateDTO.getCalories() <= 0 && productCreateDTO.getCalories() % 1 == 0) {
             multipleErrorResponse.setErrors(new Error("Calories", "Введите целое положительное число"));

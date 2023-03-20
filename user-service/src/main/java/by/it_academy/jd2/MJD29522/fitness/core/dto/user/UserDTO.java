@@ -74,27 +74,21 @@ public class UserDTO {
     public String getMail() {
         return mail;
     }
-
     public void setMail(String mail) {
         this.mail = mail;
     }
-
     public UserRole getRole() {
         return role;
     }
-
     public void setRole(UserRole role) {
         this.role = role;
     }
-
     public UserStatus getStatus() {
         return status;
     }
-
     public void setStatus(UserStatus status) {
         this.status = status;
     }
-
     public String getFio() {
         return fio;
     }

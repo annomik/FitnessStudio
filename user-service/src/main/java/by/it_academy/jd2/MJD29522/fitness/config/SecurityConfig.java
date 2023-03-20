@@ -45,10 +45,10 @@ public class SecurityConfig {
         // Set permissions on endpoints
         http
                 .authorizeHttpRequests(requests -> requests
-                                .requestMatchers(HttpMethod.POST,"/users/registration").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/users/verification").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/users/login").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/users/me").hasRole("USER")
+                                .requestMatchers("/users/registration").permitAll()
+                                .requestMatchers("/users/verification").permitAll()
+                                .requestMatchers("/users/login").permitAll()
+                                .requestMatchers("/users/me").authenticated()
                                 .requestMatchers("/users/**").hasRole("ADMIN")
                                 .requestMatchers("/users").hasRole("ADMIN")
 

@@ -86,7 +86,7 @@ public class PersonalAccountService implements IPersonalAccountService {
         }
         UserEntity userEntity = personalAccountRepository.findByMail(mail);
         if(userEntity == null){
-            throw new SingleErrorResponse("Такого пользователя не существует");
+            throw new SingleErrorResponse("Такого пользователя не существует. Пройдите регистрацию.");
         }
         if (userEntity.getMail().equals(mail)
                 && userEntity.getVerificationCode().equals(verificationCode)) {
@@ -101,7 +101,7 @@ public class PersonalAccountService implements IPersonalAccountService {
     public UserDTO login(UserLoginDTO userLoginDTO) {
         UserEntity userEntity = personalAccountRepository.findByMail(userLoginDTO.getMail());
         if(userEntity == null){
-            throw new SingleErrorResponse("Такого пользователя не существует");
+            throw new SingleErrorResponse("Такого пользователя не существует. Пройдите регистрацию.");
         }
         if ( !encoder.matches(userLoginDTO.getPassword(),userEntity.getPassword())){
             throw new SingleErrorResponse("Неверный пароль");
