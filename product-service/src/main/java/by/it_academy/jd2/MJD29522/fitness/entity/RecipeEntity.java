@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "fitness", name = "recipe")
+@Table(schema = "fitness", name = "recipe",
+        uniqueConstraints = @UniqueConstraint(columnNames = "uuid"))
 public class RecipeEntity {
 
     @Id
@@ -23,11 +24,13 @@ public class RecipeEntity {
     @Column(name = "title")
     private String title;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @Column(name = "composition")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+            //(cascade = CascadeType.MERGE)
     @JoinTable(
             schema = "fitness", name = "recipe_composition",
-            joinColumns = @JoinColumn( name = "recipe_uuid"),
-            inverseJoinColumns= @JoinColumn(name="composition_uuid")
+            joinColumns = @JoinColumn( name = "recipe_uuid", referencedColumnName="uuid"),
+            inverseJoinColumns= @JoinColumn(name="composition_uuid", referencedColumnName="uuid")
     )
     private List<CompositionEntity> composition;
 

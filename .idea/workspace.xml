@@ -4,16 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36d7f871-6837-4e25-9ded-888ff9f3b95c" name="Changes" comment="Updated security classes">
+    <list default="true" id="36d7f871-6837-4e25-9ded-888ff9f3b95c" name="Changes" comment="Updated recipe classes">
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgresql/ddl/08_product.sql" beforeDir="false" afterPath="$PROJECT_DIR$/postgresql/ddl/08_product.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgresql/ddl/09_recipe.sql" beforeDir="false" afterPath="$PROJECT_DIR$/postgresql/ddl/10_recipe.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgresql/ddl/10_composition.sql" beforeDir="false" afterPath="$PROJECT_DIR$/postgresql/ddl/09_composition.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgresql/ddl/11_recipe_composition.sql" beforeDir="false" afterPath="$PROJECT_DIR$/postgresql/ddl/11_recipe_composition.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/core/dto/user/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/core/dto/user/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/service/PersonalAccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/service/PersonalAccountService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/web/filter/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/web/filter/JwtFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/entity/CompositionEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/entity/CompositionEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/entity/RecipeEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/entity/RecipeEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/repositories/api/IRecipeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/repositories/api/IRecipeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/service/RecipeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/service/RecipeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/web/filter/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/web/filter/JwtFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/web/utils/JwtTokenUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/web/utils/JwtTokenUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/web/utils/UserDetailsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/web/utils/UserDetailsDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/web/utils/JwtTokenUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/by/it_academy/jd2/MJD29522/fitness/web/utils/JwtTokenUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,11 +38,15 @@
   <component name="JpbToolWindowState">
     <option name="myId2FirstActivated">
       <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
         <entry key="com.haulmont.jpb.jpaStructure" value="true" />
       </map>
     </option>
     <option name="myId2Visible">
       <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="false" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
         <entry key="com.haulmont.jpb.jpaStructure" value="false" />
       </map>
     </option>
@@ -58,7 +69,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../SavedGroup/fitness-studio-master юл20.03" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -102,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679257960637</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Updated security classes">
+      <created>1679316730179</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1679316730179</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -119,6 +137,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="change to microservices" />
     <MESSAGE value="Updated security classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated security classes" />
+    <MESSAGE value="Updated recipe classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated recipe classes" />
   </component>
 </project>

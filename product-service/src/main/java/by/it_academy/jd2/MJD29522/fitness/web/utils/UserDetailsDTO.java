@@ -14,7 +14,7 @@ public class UserDetailsDTO implements UserDetails {
     private String role;
     private String uuid;
 
-    public UserDetailsDTO(String fio, String mail, String role, String uuid) {
+    public UserDetailsDTO( String fio, String mail, String role, String uuid) {
         this.fio = fio;
         this.mail = mail;
         this.role = role;

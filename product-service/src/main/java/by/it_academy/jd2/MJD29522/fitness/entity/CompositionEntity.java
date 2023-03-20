@@ -13,7 +13,7 @@ public class CompositionEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "product_uuid")
-    private ProductEntity productEntity; // list??
+    private ProductEntity productEntity;
 
     @Column(name = "weight")
     private int weight;
@@ -55,5 +55,7 @@ public class CompositionEntity {
     public void setWeight(int weight) {
         this.weight = weight;
     }
+
+
 
 }

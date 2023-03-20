@@ -22,7 +22,6 @@ public class JwtTokenUtil {
                 .setSigningKey(property.getSecret())
                 .parseClaimsJws(token)
                 .getBody();
-
         return claims.get("fio", String.class);
     }
 
@@ -31,8 +30,7 @@ public class JwtTokenUtil {
                 .setSigningKey(property.getSecret())
                 .parseClaimsJws(token)
                 .getBody();
-
-        return claims.getSubject();
+        return claims.get("mail", String.class);
     }
 
     public String getUserRole(String token) {
@@ -40,15 +38,14 @@ public class JwtTokenUtil {
                 .setSigningKey(property.getSecret())
                 .parseClaimsJws(token)
                 .getBody();
-
         return claims.get("role", String.class);
     }
+
     public String getUserUUDI(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(property.getSecret())
                 .parseClaimsJws(token)
                 .getBody();
-
         return claims.get("uuid", String.class);
     }
 
@@ -57,7 +54,6 @@ public class JwtTokenUtil {
                 .setSigningKey(property.getSecret())
                 .parseClaimsJws(token)
                 .getBody();
-
         return claims.getExpiration();
     }
 

@@ -20,29 +20,19 @@ public class JwtTokenUtil {
 
     public String generateAccessToken(UserDTO userDTO) {
         HashMap<String, Object> map = new HashMap<>();
+        map.put("fio", userDTO.getFio());
         map.put("mail", userDTO.getMail());
         map.put("role", userDTO.getRole());
         map.put("uuid", userDTO.getUuid());
         return  Jwts.builder()
                 //.setSubject(userDTO.getMail())
-                .addClaims(map)
+                .setClaims(map)
                 .setIssuer(property.getIssuer())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7))) // 1 week
                 .signWith(SignatureAlgorithm.HS512, property.getSecret())
                 .compact();
     }
-
-//    public  String generateAccessToken(String mail) {
-//        return Jwts.builder()
-//                .setSubject(mail)
-//              //  .setPayload(user.getRole().toString())
-//                .setIssuer(property.getIssuer())
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7))) // 1 week
-//                .signWith(SignatureAlgorithm.HS512, property.getSecret())
-//                .compact();
-//    }
 
     public String getUserMail(String token) {
         Claims claims = Jwts.parser()
@@ -58,8 +48,23 @@ public class JwtTokenUtil {
                 .setSigningKey(property.getSecret())
                 .parseClaimsJws(token)
                 .getBody();
-
         return claims.get("role", String.class);
+    }
+
+    public String getUserUUDI(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(property.getSecret())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("uuid", String.class);
+    }
+
+    public String getUsername(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(property.getSecret())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("fio", String.class);
     }
 
     public Date getExpirationDate(String token) {

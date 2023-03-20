@@ -12,9 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
-
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 @Component
@@ -56,7 +54,11 @@ public class JwtFilter extends OncePerRequestFilter {
                 new WebAuthenticationDetailsSource().buildDetails(request)
         );
 
+
+
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(request, response);
+
+        chain.doFilter(request, response);   //!
     }
 }

@@ -44,6 +44,10 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public void addNewRecipe(RecipeCreateDTO recipeCreateDTO) {
+//        Optional<RecipeEntity> recipeByTitle = recipeRepository.findByTitle(recipeCreateDTO.getTitle());
+//        if (recipeByTitle != null) {
+//            throw new SingleErrorResponse("Рецепт с таким названием уже существует");
+//        }
         validate(recipeCreateDTO);
 
         LocalDateTime dtCreate = LocalDateTime.now(); //.withNano(3);
@@ -58,13 +62,15 @@ public class RecipeService implements IRecipeService {
                     productEntity,
                    composition.getWeight()));
         }
+
         RecipeEntity recipeEntity = new RecipeEntity(UUID.randomUUID(),
                 dtCreate,
                 dtCreate,
                 recipeCreateDTO.getTitle(),
                 compositionEntityList
         );
-        recipeRepository.save(recipeEntity);
+        System.out.println(recipeEntity);
+        recipeRepository.save(recipeEntity);   //!
     }
 
     @Override
@@ -131,6 +137,7 @@ public class RecipeService implements IRecipeService {
                 double proteins = compositionEntity.getWeight() * productDTO.getProteins() / productDTO.getWeight();
                 double fats = compositionEntity.getWeight() * productDTO.getFats() / productDTO.getWeight();
                 double carbohydrates = compositionEntity.getWeight() * productDTO.getCarbohydrates() / productDTO.getWeight();
+
                 CompositionWithAllParametersDTO compositionWithAllParameters = new CompositionWithAllParametersDTO(
                         productDTO,
                         compositionEntity.getWeight(),
@@ -167,10 +174,6 @@ public class RecipeService implements IRecipeService {
 
         if (recipeCreateDTO.getTitle() == null || recipeCreateDTO.getTitle().isBlank() ) {
             multipleErrorResponse.setErrors(new Error("Title", "Поле не заполнено"));
-        }
-        RecipeEntity recipeByTitle = recipeRepository.findByTitle(recipeCreateDTO.getTitle());
-        if (recipeByTitle != null) {
-            multipleErrorResponse.setErrors(new Error("Title", "Рецепт с таким названием уже существует"));
         }
         if (recipeCreateDTO.getComposition().size() == 0 ) {
             multipleErrorResponse.setErrors(new Error("Composition", "Рецепт должен состоять хотя бы из 1 продукта"));
