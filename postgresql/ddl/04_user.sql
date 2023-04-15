@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS fitness
+    AUTHORIZATION root;
 CREATE TABLE IF NOT EXISTS fitness."user"
 (
     uuid uuid NOT NULL,

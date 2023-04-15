@@ -1,3 +1,6 @@
+CREATE SCHEMA IF NOT EXISTS fitness
+    AUTHORIZATION root;
+
 CREATE TABLE IF NOT EXISTS fitness.role
 (
     role text COLLATE pg_catalog."default" NOT NULL,
