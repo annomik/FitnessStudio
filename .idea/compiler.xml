@@ -12,8 +12,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="fitness_studio" target="17" />
-      <module name="product-service" target="17" />
-      <module name="user-service" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

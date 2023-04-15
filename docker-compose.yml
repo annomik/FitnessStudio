@@ -7,8 +7,6 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-    ports:
-      - "8000:5432"
     networks:
       - fitness_ntwrk
   pgadmin:
