@@ -3,9 +3,9 @@ package by.it_academy.jd2.MJD29522.fitness.service;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.error.Error;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.error.MultipleErrorResponse;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.error.SingleErrorResponse;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.Error;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.MultipleErrorResponse;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.SingleErrorResponse;
 import by.it_academy.jd2.MJD29522.fitness.repositories.api.IProductRepository;
 import by.it_academy.jd2.MJD29522.fitness.entity.ProductEntity;
 import by.it_academy.jd2.MJD29522.fitness.service.api.*;
@@ -34,7 +34,7 @@ public class ProductService implements IProductService {
         validate(productCreateDTO);
         ProductEntity EntityByTitle = productRepository.findByTitle(productCreateDTO.getTitle());
         if (EntityByTitle != null){
-            throw new SingleErrorResponse("Продукт с таким названием уже есть в базе");
+            throw new SingleErrorResponse("The product with the same name already exists.");
         }
         ProductEntity entity = conversionService.convert(productCreateDTO, ProductEntity.class);
         productRepository.save(entity);
@@ -48,12 +48,12 @@ public class ProductService implements IProductService {
     @Override
     public void update(UUID uuid, LocalDateTime dtUpdate, ProductCreateDTO productCreateDTO) {
         if(uuid == null || dtUpdate == null){
-            throw new SingleErrorResponse("Введите параметры для обновления");
+            throw new SingleErrorResponse("Enter parameters for update.");
         }
         validate(productCreateDTO);
         Optional<ProductEntity> findEntity = productRepository.findById(uuid);
         if (!findEntity.isPresent()) {
-            throw new SingleErrorResponse("Продукта с id " + uuid + " для обновления не найдено");
+            throw new SingleErrorResponse("The product with id " + uuid + " for update not found.");
         } else {
             ProductEntity entity = findEntity.get();
             if (entity.getDtUpdate().isEqual(dtUpdate) && entity.getUuid().equals(uuid)) {
@@ -66,7 +66,7 @@ public class ProductService implements IProductService {
 
                 productRepository.save(entity);
             } else {
-                throw new SingleErrorResponse("Версии продукта с id " + uuid + " не совпадают!");
+                throw new SingleErrorResponse("Versions of the product with id " + uuid + " do not match.");
             }
         }
     }
@@ -96,22 +96,22 @@ public class ProductService implements IProductService {
         MultipleErrorResponse multipleErrorResponse = new MultipleErrorResponse();
 
         if (productCreateDTO.getTitle() == null || productCreateDTO.getTitle().isBlank()){
-            multipleErrorResponse.setErrors(new Error("Title", "Поле не заполнено"));
+            multipleErrorResponse.setErrors(new Error("Title", "The field is not filled."));
         }
         if (productCreateDTO.getWeight() <= 0 && productCreateDTO.getWeight() % 1 == 0){
-            multipleErrorResponse.setErrors(new Error("Weight", "Поле Weight должно быть целым положительным числом"));
+            multipleErrorResponse.setErrors(new Error("Weight", "The field 'Weight' must be an integer positive number."));
         }
         if (productCreateDTO.getCalories() <= 0 && productCreateDTO.getCalories() % 1 == 0) {
-            multipleErrorResponse.setErrors(new Error("Calories", "Введите целое положительное число"));
+            multipleErrorResponse.setErrors(new Error("Calories", "Enter an integer positive number."));
         }
         if (productCreateDTO.getProteins() < 0 ) {
-            multipleErrorResponse.setErrors(new Error("Proteins", "Введите корректное значение. Например: 4.2"));
+            multipleErrorResponse.setErrors(new Error("Proteins", "Please, enter a valid value. For example: 4.2"));
         }
         if (productCreateDTO.getFats() < 0 ) {
-            multipleErrorResponse.setErrors(new Error("Fats", "Введите корректное значение. Например: 4.2"));
+            multipleErrorResponse.setErrors(new Error("Fats", "Please, enter a valid value. For example: 4.2"));
         }
         if (productCreateDTO.getCarbohydrates() < 0 ) {
-            multipleErrorResponse.setErrors(new Error("Carbohydrates", "Введите корректное значение. Например: 50.2"));
+            multipleErrorResponse.setErrors(new Error("Carbohydrates", "Please, enter a valid value. For example: 50.2"));
         }
         if (!multipleErrorResponse.getErrors().isEmpty()) {
             throw multipleErrorResponse;

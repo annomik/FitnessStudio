@@ -6,9 +6,9 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.CompositionWithAllParametersDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.error.Error;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.error.MultipleErrorResponse;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.error.SingleErrorResponse;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.Error;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.MultipleErrorResponse;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.SingleErrorResponse;
 import by.it_academy.jd2.MJD29522.fitness.entity.CompositionEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.ProductEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.RecipeEntity;
@@ -44,10 +44,10 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public void addNewRecipe(RecipeCreateDTO recipeCreateDTO) {
-//        Optional<RecipeEntity> recipeByTitle = recipeRepository.findByTitle(recipeCreateDTO.getTitle());
-//        if (recipeByTitle != null) {
-//            throw new SingleErrorResponse("Рецепт с таким названием уже существует");
-//        }
+        RecipeEntity recipeByTitle = recipeRepository.findByTitle(recipeCreateDTO.getTitle());
+        if (recipeByTitle != null) {
+            throw new SingleErrorResponse("A recipe with the same name already exists.");
+        }
         validate(recipeCreateDTO);
 
         LocalDateTime dtCreate = LocalDateTime.now(); //.withNano(3);
@@ -58,11 +58,9 @@ public class RecipeService implements IRecipeService {
                     productService.findByUUID(composition.getProduct().getUuid());
             ProductEntity productEntity = productFoundInDB.get();
             compositionEntityList.add(new CompositionEntity(
-                   UUID.randomUUID(),
-                    productEntity,
-                   composition.getWeight()));
+                        productEntity,
+                        composition.getWeight()));
         }
-
         RecipeEntity recipeEntity = new RecipeEntity(UUID.randomUUID(),
                 dtCreate,
                 dtCreate,
@@ -76,16 +74,16 @@ public class RecipeService implements IRecipeService {
     @Override
     public void update(UUID uuid, LocalDateTime dtUpdate, RecipeCreateDTO recipeCreateDTO) {
         if (uuid == null || dtUpdate == null || recipeCreateDTO == null) {
-            throw new SingleErrorResponse("Введите параметры для обновления");
+            throw new SingleErrorResponse("Enter parameters for update");
         }
         validate(recipeCreateDTO);
         Optional<RecipeEntity> findEntity = recipeRepository.findById(uuid);
         if (!findEntity.isPresent()) {
-            throw new SingleErrorResponse("Рецепта с id " + uuid + " для обновления не найдено!");
+            throw new SingleErrorResponse("A recipe with id " + uuid + " for update not found!");
         }
         RecipeEntity recipeEntity = findEntity.get();
         if (!(recipeEntity.getDtUpdate().isEqual(dtUpdate) && recipeEntity.getUuid().equals(uuid))) {
-            throw new SingleErrorResponse("Версии рецепта с id " + uuid + " не совпадают!");
+            throw new SingleErrorResponse("Versions of the recipe with id " + uuid + " do not match!");
         }
         List<CompositionDTO> compositionDTOList = recipeCreateDTO.getComposition();
         List<CompositionEntity> compositionEntityList = new ArrayList<>();
@@ -93,9 +91,8 @@ public class RecipeService implements IRecipeService {
             Optional<ProductEntity> productFoundInDB = productService.findByUUID(composition.getProduct().getUuid());
             ProductEntity productEntity = productFoundInDB.get();
             compositionEntityList.add(new CompositionEntity(
-                    UUID.randomUUID(),
-                    productEntity,
-                    composition.getWeight()));
+                         productEntity,
+                         composition.getWeight()));
         }
         recipeEntity.setTitle(recipeCreateDTO.getTitle());
         recipeEntity.setComposition(compositionEntityList);
@@ -173,20 +170,21 @@ public class RecipeService implements IRecipeService {
         MultipleErrorResponse multipleErrorResponse = new MultipleErrorResponse();
 
         if (recipeCreateDTO.getTitle() == null || recipeCreateDTO.getTitle().isBlank() ) {
-            multipleErrorResponse.setErrors(new Error("Title", "Поле не заполнено"));
+            multipleErrorResponse.setErrors(new Error("Title", "The field is not filled"));
         }
         if (recipeCreateDTO.getComposition().size() == 0 ) {
-            multipleErrorResponse.setErrors(new Error("Composition", "Рецепт должен состоять хотя бы из 1 продукта"));
+            multipleErrorResponse.setErrors(new Error("Composition", "Recipe must contain at least 1 product"));
         }
         List<CompositionDTO> compositionDTOList = recipeCreateDTO.getComposition();
         for(CompositionDTO composition : compositionDTOList) {
             if (composition.getWeight() <= 0 && composition.getWeight() % 1 == 0) {
-                multipleErrorResponse.setErrors(new Error("Weight", "Введите целое положительное число"));
+                multipleErrorResponse.setErrors(new Error("Weight", "Enter a positive number"));
             }
             Optional<ProductEntity> productFoundInDB = productService.findByUUID(composition.getProduct().getUuid());
             if (productFoundInDB.isEmpty()){
                 multipleErrorResponse.setErrors(new Error(
-                        "Product", "Продукта с id " + composition.getProduct().getUuid() + " нет в базе продуктов"));
+                        "Product",
+                        "The product with id " + composition.getProduct().getUuid() + " was not found in the product database"));
             }
         }
 

@@ -53,11 +53,11 @@ public class UserService implements IUserService {
     @Override
     public void addNewUser(UserCreateDTO userCreateDTO) {
         if(userCreateDTO == null){
-            throw new SingleErrorResponse("Введите данные");
+            throw new SingleErrorResponse("Enter the data");
         }
         UserEntity userEntity = userRepository.findByMail(userCreateDTO.getMail());
         if(userEntity != null){
-            throw new SingleErrorResponse(("Пользователь с таким электронным адресом уже существует"));
+            throw new SingleErrorResponse(("User with this email address already exists"));
         }
         validate(userCreateDTO);
         UserEntity entity = conversionToEntity.convertToEntity(userCreateDTO);
@@ -68,17 +68,18 @@ public class UserService implements IUserService {
 
     @Override
     public void update(UUID uuid, LocalDateTime dtUpdate, UserCreateDTO userCreateDTO) {
-        if(uuid == null || userCreateDTO == null){
-            throw new SingleErrorResponse("Введите параметры для обновления");
-        }
         validate(userCreateDTO);
+        if(uuid == null || userCreateDTO == null){
+            throw new SingleErrorResponse("Enter parameters for update");
+        }
+
         Optional<UserEntity> userEntityFromDB = userRepository.findById(uuid);
         if (userEntityFromDB.isEmpty()) {
-            throw new SingleErrorResponse("Пользователя с id " + uuid + " для обновления не найдено!");
+            throw new SingleErrorResponse("User with id " + uuid + " for update not found.");
         } else {
             UserEntity entity = userEntityFromDB.get();
             if (!entity.getDtUpdate().isEqual(dtUpdate) ) {
-                throw new SingleErrorResponse("Версии для пользователя не совпадают!");
+                throw new SingleErrorResponse("Versions for the user with id " + uuid + " do not match");
             }else{
                 String encode = encoder.encode(userCreateDTO.getPassword());
 
@@ -131,24 +132,24 @@ public class UserService implements IUserService {
 
         Matcher matcher = EMAIL_PATTERN.matcher(userCreateDTO.getMail());
         if( !matcher.matches()){
-            multipleErrorResponse.setErrors(new Error("MAIL","Введите корректный EMAIL"));
+            multipleErrorResponse.setErrors(new Error("MAIL","Please, enter a valid EMAIL"));
         }
         if (userCreateDTO.getFio() == null || userCreateDTO.getFio().isBlank()){
-            multipleErrorResponse.setErrors(new Error("FIO", "Поле не заполнено"));
+            multipleErrorResponse.setErrors(new Error("FIO", "The field is not filled"));
         }
         if (userCreateDTO.getMail() == null || userCreateDTO.getMail().isBlank()) {
-            multipleErrorResponse.setErrors(new Error("MAIL", "Поле не заполнено"));
+            multipleErrorResponse.setErrors(new Error("MAIL", "The field is not filled"));
         }
         if (userCreateDTO.getPassword() == null || userCreateDTO.getPassword().isBlank()) {
-            multipleErrorResponse.setErrors(new Error("Password", "Поле не заполнено"));
+            multipleErrorResponse.setErrors(new Error("Password", "The field is not filled"));
         }
            // com.google.common.base.Enums.getIfPresent(UserRole.class, userCreateDTO.getRole()).orNull()
         if(! Arrays.stream(UserRole.values()).anyMatch(element -> element == userCreateDTO.getRole())  ){
-            multipleErrorResponse.setErrors(new Error("Role", "Допустимые значения: USER, ADMIN"));
+            multipleErrorResponse.setErrors(new Error("Role", "Valid values: USER, ADMIN"));
         }
         if(! Arrays.stream(UserStatus.values()).anyMatch(element -> element == userCreateDTO.getStatus())  ){
             multipleErrorResponse.setErrors(
-                    new Error("Status", "Допустимые значения: WAITING_ACTIVATION, ACTIVATED, DEACTIVATED"));
+                    new Error("Status", "Valid values: WAITING_ACTIVATION, ACTIVATED, DEACTIVATED"));
         }
 
         if ( !multipleErrorResponse.getErrors().isEmpty()) {
