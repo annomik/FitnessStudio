@@ -1,9 +1,8 @@
-package by.it_academy.jd2.MJD29522.fitness.core.exception.error;
+package by.it_academy.jd2.MJD29522.fitness.core.exception;
 
 import java.util.Objects;
 
 public class Error {
-
     private String field;
     private String message;
 

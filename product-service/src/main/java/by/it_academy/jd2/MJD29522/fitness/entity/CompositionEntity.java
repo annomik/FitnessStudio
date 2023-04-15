@@ -1,17 +1,12 @@
 package by.it_academy.jd2.MJD29522.fitness.entity;
 
 import jakarta.persistence.*;
-import java.util.UUID;
 
-@Entity
-//@Embeddable
+@Embeddable
 @Table(schema = "fitness", name = "composition")
 public class CompositionEntity {
 
-    @Id
-    private UUID uuid;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "product_uuid")
     private ProductEntity productEntity;
 
@@ -21,23 +16,9 @@ public class CompositionEntity {
     public CompositionEntity() {
     }
 
-    public CompositionEntity(UUID uuid, ProductEntity productEntity, int weight) {
-        this.uuid = uuid;
-        this.productEntity = productEntity;
-        this.weight = weight;
-    }
-
     public CompositionEntity(ProductEntity productEntity, int weight) {
         this.productEntity = productEntity;
         this.weight = weight;
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
     }
 
     public ProductEntity getProductEntity() {
@@ -55,7 +36,4 @@ public class CompositionEntity {
     public void setWeight(int weight) {
         this.weight = weight;
     }
-
-
-
 }

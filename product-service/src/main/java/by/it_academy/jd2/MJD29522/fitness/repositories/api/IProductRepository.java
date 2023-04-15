@@ -7,7 +7,6 @@ import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.UUID;
 
-//PagingAndSortingRepository
 public interface IProductRepository extends ListCrudRepository<ProductEntity, UUID> {
 
     Page<ProductEntity> findAll(Pageable pageable);

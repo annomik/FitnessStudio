@@ -14,11 +14,6 @@ import java.util.UUID;
 public class UserEntity {
 
     @Id
-//    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(
-//            name = "UUID",
-//            strategy = "org.hibernate.id.UUIDGenerator"
-//    )
     @Column(name = "uuid")
     private UUID uuid;
 

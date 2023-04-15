@@ -5,11 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.ListCrudRepository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public interface IRecipeRepository extends ListCrudRepository<RecipeEntity, UUID> {
-
     Page<RecipeEntity> findAll(Pageable pageable);
     RecipeEntity findByTitle(String title);
 }

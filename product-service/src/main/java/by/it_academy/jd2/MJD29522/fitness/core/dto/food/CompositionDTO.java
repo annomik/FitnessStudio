@@ -3,7 +3,6 @@ package by.it_academy.jd2.MJD29522.fitness.core.dto.food;
 import java.util.Objects;
 
 public class CompositionDTO {
-
     private ProductWithUUID product;
     private int weight;
 

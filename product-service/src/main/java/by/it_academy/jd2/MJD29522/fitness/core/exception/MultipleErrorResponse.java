@@ -1,11 +1,10 @@
-package by.it_academy.jd2.MJD29522.fitness.core.exception.error;
+package by.it_academy.jd2.MJD29522.fitness.core.exception;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class MultipleErrorResponse extends RuntimeException{
-
     private String logref;
     private List<Error> errors = new ArrayList<>();
 

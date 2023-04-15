@@ -6,7 +6,7 @@ public class CompositionWithAllParametersDTO {
 
     private ProductDTO product;
     private int weight;
-    private double calories;   //!!!
+    private double calories;
     private double proteins;
     private double fats;
     private double carbohydrates;

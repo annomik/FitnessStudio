@@ -2,7 +2,7 @@ package by.it_academy.jd2.MJD29522.fitness.core.dto.user;
 
 import by.it_academy.jd2.MJD29522.fitness.enums.UserRole;
 import by.it_academy.jd2.MJD29522.fitness.enums.UserStatus;
-import by.it_academy.jd2.MJD29522.fitness.service.converters.serializers.LocalDateTimeToLongSerializer;
+import by.it_academy.jd2.MJD29522.fitness.service.converters.LocalDateTimeToLongSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.LocalDateTime;

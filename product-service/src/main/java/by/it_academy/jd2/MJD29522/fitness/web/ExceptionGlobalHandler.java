@@ -1,9 +1,9 @@
 package by.it_academy.jd2.MJD29522.fitness.web;
 
 import by.it_academy.jd2.MJD29522.fitness.core.dto.exception.MultipleErrorResponseDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.error.ErrorForSingleResponse;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.error.MultipleErrorResponse;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.error.SingleErrorResponse;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.ErrorForSingleResponse;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.MultipleErrorResponse;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.SingleErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,7 +32,6 @@ public class ExceptionGlobalHandler {
     }
 
     List<ErrorForSingleResponse> errors = new ArrayList<>();
-//
 
     @ExceptionHandler
     public ResponseEntity<List<ErrorForSingleResponse>>handleSingleErrors(SingleErrorResponse e){

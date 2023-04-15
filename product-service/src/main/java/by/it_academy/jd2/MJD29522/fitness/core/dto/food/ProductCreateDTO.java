@@ -2,7 +2,6 @@ package by.it_academy.jd2.MJD29522.fitness.core.dto.food;
 
 import java.util.Objects;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductCreateDTO {
 
     private String title;

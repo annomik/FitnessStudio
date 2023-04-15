@@ -1,4 +1,4 @@
-package by.it_academy.jd2.MJD29522.fitness.service.converters.serializers;
+package by.it_academy.jd2.MJD29522.fitness.service.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
