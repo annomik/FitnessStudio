@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 public class UserService implements IUserService {
@@ -75,7 +76,6 @@ public class UserService implements IUserService {
         if(uuid == null || userCreateDTO == null){
             throw new SingleErrorResponse("Enter parameters for update");
         }
-
         Optional<UserEntity> userEntityFromDB = userRepository.findById(uuid);
         if (userEntityFromDB.isEmpty()) {
             throw new SingleErrorResponse("User with id " + uuid + " for update not found.");
@@ -114,12 +114,10 @@ public class UserService implements IUserService {
     public PageDTO<UserDTO> getPage(int numberOfPage, int size) {
         Pageable pageable = PageRequest.of(numberOfPage, size);
         Page<UserEntity> allEntity = userRepository.findAll(pageable);
-        List<UserDTO> content = new ArrayList<>();
+        List<UserDTO> content = allEntity.getContent().stream()
+                .map(s -> conversionService.convert(s, UserDTO.class))
+                .collect(Collectors.toList());
 
-        for (UserEntity entity: allEntity) {
-            UserDTO userDTO = conversionService.convert(entity, UserDTO.class);
-            content.add(userDTO);
-        }
         return new PageDTO<>(allEntity.getNumber(),
                 allEntity.getSize(),
                 allEntity.getTotalPages(),
