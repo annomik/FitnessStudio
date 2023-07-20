@@ -19,6 +19,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Transactional(readOnly = true)
 public class RecipeService implements IRecipeService {
 
     private final IRecipeRepository recipeRepository;
@@ -42,6 +44,7 @@ public class RecipeService implements IRecipeService {
         this.conversionService = conversionService;
     }
 
+    @Transactional
     @Override
     public void addNewRecipe(RecipeCreateDTO recipeCreateDTO) {
         RecipeEntity recipeByTitle = recipeRepository.findByTitle(recipeCreateDTO.getTitle());
@@ -70,7 +73,7 @@ public class RecipeService implements IRecipeService {
         System.out.println(recipeEntity);
         recipeRepository.save(recipeEntity);   //!
     }
-
+    @Transactional
     @Override
     public void update(UUID uuid, LocalDateTime dtUpdate, RecipeCreateDTO recipeCreateDTO) {
         if (uuid == null || dtUpdate == null || recipeCreateDTO == null) {

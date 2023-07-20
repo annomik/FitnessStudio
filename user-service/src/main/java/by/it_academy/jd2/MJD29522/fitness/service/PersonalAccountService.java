@@ -15,12 +15,14 @@ import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToEn
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Transactional(readOnly = true)
 public class PersonalAccountService implements IPersonalAccountService {
 
     private final IPersonalAccountRepository personalAccountRepository;
@@ -46,6 +48,7 @@ public class PersonalAccountService implements IPersonalAccountService {
         this.encoder = encoder;
     }
 
+    @Transactional
     @Override
     public boolean save(UserRegistrationDTO userRegistrationDTO) {
 
@@ -74,6 +77,7 @@ public class PersonalAccountService implements IPersonalAccountService {
         return conversionService.convert(userEntity, UserDTO.class);
     }
 
+    @Transactional
     @Override
     public void verify(String verificationCode, String mail) {
         if (verificationCode.isEmpty()){

@@ -13,6 +13,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Transactional(readOnly = true)
 public class ProductService implements IProductService {
     private final IProductRepository productRepository;
     private final ConversionService conversionService;
@@ -29,6 +31,7 @@ public class ProductService implements IProductService {
         this.conversionService = conversionService;
     }
 
+    @Transactional
     @Override
     public void addNewProduct(ProductCreateDTO productCreateDTO) {
         validate(productCreateDTO);
@@ -45,6 +48,7 @@ public class ProductService implements IProductService {
         return  productRepository.findById(uuid);
     }
 
+    @Transactional
     @Override
     public void update(UUID uuid, LocalDateTime dtUpdate, ProductCreateDTO productCreateDTO) {
         if(uuid == null || dtUpdate == null){

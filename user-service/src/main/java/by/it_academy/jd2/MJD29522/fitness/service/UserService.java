@@ -20,12 +20,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Transactional(readOnly = true)
 public class UserService implements IUserService {
 
     private final IUserRepository userRepository;
@@ -50,6 +52,7 @@ public class UserService implements IUserService {
         this.encoder = encoder;
     }
 
+    @Transactional
     @Override
     public void addNewUser(UserCreateDTO userCreateDTO) {
         if(userCreateDTO == null){
