@@ -1,6 +1,6 @@
-package by.it_academy.jd2.MJD29522.fitness.core.dto.exception;
+package by.it_academy.jd2.MJD29522.fitness.core.dto.errors;
 
-import by.it_academy.jd2.MJD29522.fitness.core.exception.error.Error;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.Error;
 
 import java.util.List;
 
