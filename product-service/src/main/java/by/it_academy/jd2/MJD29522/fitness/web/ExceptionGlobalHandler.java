@@ -1,6 +1,6 @@
 package by.it_academy.jd2.MJD29522.fitness.web;
 
-import by.it_academy.jd2.MJD29522.fitness.core.dto.exception.MultipleErrorResponseDTO;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.errors.MultipleErrorResponseDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.exception.ErrorForSingleResponse;
 import by.it_academy.jd2.MJD29522.fitness.core.exception.MultipleErrorResponse;
 import by.it_academy.jd2.MJD29522.fitness.core.exception.SingleErrorResponse;
