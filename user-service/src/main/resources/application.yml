@@ -14,7 +14,7 @@ spring:
     host: smtp.mail.ru
     port: 465
     username: mikulichmail@mail.ru
-    password: jzE60bKnTdeDNm0mJpWL
+    password: KLX57ndHLwhNqtkbwQ4w
     test-connection: true
     protocol: smtps
 properties:
