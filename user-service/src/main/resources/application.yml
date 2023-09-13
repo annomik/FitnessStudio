@@ -14,7 +14,7 @@ spring:
     host: smtp.mail.ru
     port: 465
     username: mikulichmail@mail.ru
-    password: KLX57ndHLwhNqtkbwQ4w
+    password: ask.me
     test-connection: true
     protocol: smtps
 properties:
