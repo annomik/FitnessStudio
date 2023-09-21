@@ -92,9 +92,7 @@ public class UserService implements IUserService {
     @Override
     public UserDTO getUserByMail(String mail) {
         UserEntity userEntity = userRepository.findByMail(mail);
-//        if(userEntity == null){
-//            throw new SingleErrorResponse("Пользователя с mail " + mail + " нет базе данных!");
-//        }
+
         return conversionService.convert(userEntity, UserDTO.class);
     }
 
@@ -116,33 +114,4 @@ public class UserService implements IUserService {
                 content);
     }
 
-    public void validate(UserCreateDTO userCreateDTO)  {
-//        MultipleErrorResponse multipleErrorResponse = new MultipleErrorResponse();
-//
-//        Matcher matcher = EMAIL_PATTERN.matcher(userCreateDTO.getMail());
-//        if( !matcher.matches()){
-//            multipleErrorResponse.setErrors(new Error("MAIL","Please, enter a valid EMAIL"));
-//        }
-//        if (userCreateDTO.getFio() == null || userCreateDTO.getFio().isBlank()){
-//            multipleErrorResponse.setErrors(new Error("FIO", "The field is not filled"));
-//        }
-//        if (userCreateDTO.getMail() == null || userCreateDTO.getMail().isBlank()) {
-//            multipleErrorResponse.setErrors(new Error("MAIL", "The field is not filled"));
-//        }
-//        if (userCreateDTO.getPassword() == null || userCreateDTO.getPassword().isBlank()) {
-//            multipleErrorResponse.setErrors(new Error("Password", "The field is not filled"));
-//        }
-//           // com.google.common.base.Enums.getIfPresent(UserRole.class, userCreateDTO.getRole()).orNull()
-//        if(! Arrays.stream(UserRole.values()).anyMatch(element -> element == userCreateDTO.getRole())  ){
-//            multipleErrorResponse.setErrors(new Error("Role", "Valid values: USER, ADMIN"));
-//        }
-//        if(! Arrays.stream(UserStatus.values()).anyMatch(element -> element == userCreateDTO.getStatus())  ){
-//            multipleErrorResponse.setErrors(
-//                    new Error("Status", "Valid values: WAITING_ACTIVATION, ACTIVATED, DEACTIVATED"));
-//        }
-//
-//        if ( !multipleErrorResponse.getErrors().isEmpty()) {
-//            throw multipleErrorResponse;
-//        }
-    }
 }

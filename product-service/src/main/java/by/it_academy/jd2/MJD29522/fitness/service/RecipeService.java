@@ -1,20 +1,17 @@
 package by.it_academy.jd2.MJD29522.fitness.service;
 
 import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.food.CompositionDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.food.ProductDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeCreateDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.food.CompositionWithAllParametersDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeDTO;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.Error;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.MultipleErrorResponse;
-import by.it_academy.jd2.MJD29522.fitness.core.exception.SingleErrorResponse;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.errors.ErrorCode;
+import by.it_academy.jd2.MJD29522.fitness.core.dto.food.*;
+import by.it_academy.jd2.MJD29522.fitness.core.exception.InputSingleDataException;
 import by.it_academy.jd2.MJD29522.fitness.entity.CompositionEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.ProductEntity;
 import by.it_academy.jd2.MJD29522.fitness.entity.RecipeEntity;
 import by.it_academy.jd2.MJD29522.fitness.repositories.api.IRecipeRepository;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IProductService;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IRecipeService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +28,6 @@ import java.util.UUID;
 
 @Transactional(readOnly = true)
 public class RecipeService implements IRecipeService {
-
     private final IRecipeRepository recipeRepository;
     private final IProductService productService;
     private final ConversionService conversionService;
@@ -46,13 +42,12 @@ public class RecipeService implements IRecipeService {
 
     @Transactional
     @Override
-    public void addNewRecipe(RecipeCreateDTO recipeCreateDTO) {
-        RecipeEntity recipeByTitle = recipeRepository.findByTitle(recipeCreateDTO.getTitle());
-        if (recipeByTitle != null) {
-            throw new SingleErrorResponse("A recipe with the same name already exists.");
+    public void addNewRecipe(@NotNull @Valid RecipeCreateDTO recipeCreateDTO) {
+       // RecipeEntity recipeByTitle = recipeRepository.findByTitle();
+        if (recipeRepository.existsByTitle(recipeCreateDTO.getTitle()) ) {
+            throw new InputSingleDataException("A recipe with the same name already exists.", ErrorCode.ERROR);
         }
-        validate(recipeCreateDTO);
-
+      //  validate(recipeCreateDTO);
         LocalDateTime dtCreate = LocalDateTime.now(); //.withNano(3);
         List<CompositionDTO> compositionList = recipeCreateDTO.getComposition();
         List<CompositionEntity> compositionEntityList = new ArrayList<>();
@@ -75,18 +70,15 @@ public class RecipeService implements IRecipeService {
     }
     @Transactional
     @Override
-    public void update(UUID uuid, LocalDateTime dtUpdate, RecipeCreateDTO recipeCreateDTO) {
-        if (uuid == null || dtUpdate == null || recipeCreateDTO == null) {
-            throw new SingleErrorResponse("Enter parameters for update");
-        }
-        validate(recipeCreateDTO);
+    public void update(@NotNull UUID uuid,@NotNull LocalDateTime dtUpdate, @NotNull @Valid RecipeCreateDTO recipeCreateDTO) {
+         //   validate(recipeCreateDTO);
         Optional<RecipeEntity> findEntity = recipeRepository.findById(uuid);
         if (!findEntity.isPresent()) {
-            throw new SingleErrorResponse("A recipe with id " + uuid + " for update not found!");
+            throw new InputSingleDataException("A recipe with id " + uuid + " for update not found!", ErrorCode.ERROR);
         }
         RecipeEntity recipeEntity = findEntity.get();
         if (!(recipeEntity.getDtUpdate().isEqual(dtUpdate) && recipeEntity.getUuid().equals(uuid))) {
-            throw new SingleErrorResponse("Versions of the recipe with id " + uuid + " do not match!");
+            throw new InputSingleDataException("Versions of the recipe with id " + uuid + " do not match!", ErrorCode.ERROR);
         }
         List<CompositionDTO> compositionDTOList = recipeCreateDTO.getComposition();
         List<CompositionEntity> compositionEntityList = new ArrayList<>();
@@ -168,31 +160,31 @@ public class RecipeService implements IRecipeService {
         return content;
     }
 
-    @Override
+
     public void validate(RecipeCreateDTO recipeCreateDTO)  {
-        MultipleErrorResponse multipleErrorResponse = new MultipleErrorResponse();
+//        MultipleErrorResponse multipleErrorResponse = new MultipleErrorResponse();
+//
+//        if (recipeCreateDTO.getTitle() == null || recipeCreateDTO.getTitle().isBlank() ) {
+//            multipleErrorResponse.setErrors(new Error("Title", "The field is not filled"));
+//        }
+//        if (recipeCreateDTO.getComposition().size() == 0 ) {
+//            multipleErrorResponse.setErrors(new Error("Composition", "Recipe must contain at least 1 product"));
+//        }
+//        List<CompositionDTO> compositionDTOList = recipeCreateDTO.getComposition();
+//        for(CompositionDTO composition : compositionDTOList) {
+//            if (composition.getWeight() <= 0 && composition.getWeight() % 1 == 0) {
+//                multipleErrorResponse.setErrors(new Error("Weight", "Enter a positive number"));
+//            }
+//            Optional<ProductEntity> productFoundInDB = productService.findByUUID(composition.getProduct().getUuid());
+//            if (productFoundInDB.isEmpty()){
+//                multipleErrorResponse.setErrors(new Error(
+//                        "Product",
+//                        "The product with id " + composition.getProduct().getUuid() + " was not found in the product database"));
+//            }
+//        }
+//
+//        if ( !multipleErrorResponse.getErrors().isEmpty()) {
+//            throw multipleErrorResponse;
+        }
 
-        if (recipeCreateDTO.getTitle() == null || recipeCreateDTO.getTitle().isBlank() ) {
-            multipleErrorResponse.setErrors(new Error("Title", "The field is not filled"));
-        }
-        if (recipeCreateDTO.getComposition().size() == 0 ) {
-            multipleErrorResponse.setErrors(new Error("Composition", "Recipe must contain at least 1 product"));
-        }
-        List<CompositionDTO> compositionDTOList = recipeCreateDTO.getComposition();
-        for(CompositionDTO composition : compositionDTOList) {
-            if (composition.getWeight() <= 0 && composition.getWeight() % 1 == 0) {
-                multipleErrorResponse.setErrors(new Error("Weight", "Enter a positive number"));
-            }
-            Optional<ProductEntity> productFoundInDB = productService.findByUUID(composition.getProduct().getUuid());
-            if (productFoundInDB.isEmpty()){
-                multipleErrorResponse.setErrors(new Error(
-                        "Product",
-                        "The product with id " + composition.getProduct().getUuid() + " was not found in the product database"));
-            }
-        }
-
-        if ( !multipleErrorResponse.getErrors().isEmpty()) {
-            throw multipleErrorResponse;
-        }
-    }
 }

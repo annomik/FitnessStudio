@@ -34,7 +34,7 @@ public class PersonalAccountService implements IPersonalAccountService {
     private final PasswordEncoder encoder;
     private final String SUBJECT = "Activation in Fitness Studio";
     private final String MESSAGE = "Thank you for the registration in our application! \n " +
-            " To successfully activate your account, please, enter your email address and this code: ";
+            "To successfully activate your account, please, enter your email address and this code: ";
 
     public PersonalAccountService(IPersonalAccountRepository personalAccountRepository,
                                   IConversionToEntity conversionToEntity,
@@ -52,6 +52,10 @@ public class PersonalAccountService implements IPersonalAccountService {
     @Transactional
     @Override
     public boolean save(@NotNull @Valid UserRegistrationDTO userRegistrationDTO) {
+        UserEntity userEntity = personalAccountRepository.findByMail(userRegistrationDTO.getMail());
+        if(userEntity != null){
+            throw new InputSingleDataException("User with this email address already exists.", ErrorCode.ERROR);
+        }
         UserEntity entity = conversionToEntity.convertToEntity(userRegistrationDTO);
         String encode = encoder.encode(entity.getPassword());
         entity.setPassword(encode);
@@ -88,7 +92,7 @@ public class PersonalAccountService implements IPersonalAccountService {
             userEntity.setVerificationCode(null);
             personalAccountRepository.save(userEntity);
           //  personalAccountRepository.deleteByVerificationCode(verificationCode);
-        }  else throw new InputSingleDataException("Please, check your verification code.", ErrorCode.ERROR);
+        }  else throw new InputSingleDataException("Incorrect verification code.", ErrorCode.ERROR);
     }
 
     @Override
@@ -113,12 +117,7 @@ public class PersonalAccountService implements IPersonalAccountService {
 //            multipleErrorResponse.setErrors(new Error("MAIL", "The field is not filled"));
 //        }
 //        Matcher matcher = EMAIL_PATTERN.matcher(userRegistrationDTO.getMail());
-//        if( !matcher.matches()){
-//            multipleErrorResponse.setErrors(new Error("MAIL","Please, enter a valid EMAIL"));
-//        }
-//        if (userRegistrationDTO.getFio() == null || userRegistrationDTO.getFio().isBlank()){
-//            multipleErrorResponse.setErrors(new Error("FIO", "The field is not filled"));
-//        }
+//       //
 //        UserEntity userEntity = personalAccountRepository.findByMail(userRegistrationDTO.getMail());
 //        if(!(userEntity == null)){
 //            multipleErrorResponse.setErrors(new Error("MAIL","User with this email address already exists"));
