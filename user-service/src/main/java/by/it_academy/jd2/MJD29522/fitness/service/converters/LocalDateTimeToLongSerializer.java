@@ -16,18 +16,4 @@ public class LocalDateTimeToLongSerializer extends JsonSerializer<LocalDateTime>
               //  getEpochSecond());
     }
 }
-//public class LocalDateTimeSerializer{//
-//    public static class LocalDateTimeConverter extends StdSerializer<LocalDateTime> {//
-//        private static final long serialVersionUID = 1L;
-//
-//        protected LocalDateTimeConverter(Class<LocalDateTime> t) {
-//            super(t);
-//        }
-//
-//        @Override
-//        public void serialize(LocalDateTime value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-//            jsonGenerator.writeNumber(value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-//        }//
-//    }
 
-//}

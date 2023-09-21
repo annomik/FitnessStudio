@@ -4,6 +4,8 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Past;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> addNewUser(@RequestBody UserCreateDTO userCreateDTO) {
+    public ResponseEntity<?> addNewUser(@Valid @RequestBody UserCreateDTO userCreateDTO) {
         userService.addNewUser(userCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -41,9 +43,9 @@ public class UserController {
     }
 
     @RequestMapping(path = "/{uuid}/dt_update/{dt_update}", method = RequestMethod.PUT)
-    public ResponseEntity<?> update(@PathVariable("uuid") UUID uuid,
-                                    @PathVariable("dt_update") LocalDateTime dtUpdate,
-                                    @RequestBody UserCreateDTO userCreateDTO ) {
+    public ResponseEntity<?> updateUser(@PathVariable("uuid") UUID uuid,
+                                    @PathVariable("dt_update") @Past LocalDateTime dtUpdate,
+                                    @Valid @RequestBody UserCreateDTO userCreateDTO ) {
         userService.update(uuid, dtUpdate, userCreateDTO);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
