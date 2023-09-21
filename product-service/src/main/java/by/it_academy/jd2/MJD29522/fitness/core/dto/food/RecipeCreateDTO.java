@@ -1,10 +1,12 @@
 package by.it_academy.jd2.MJD29522.fitness.core.dto.food;
 
+import by.it_academy.jd2.MJD29522.fitness.validator.api.ValidString;
+
 import java.util.List;
 import java.util.Objects;
 
 public class RecipeCreateDTO {
-
+    @ValidString
     private String title;
     private List<CompositionDTO> composition;
 

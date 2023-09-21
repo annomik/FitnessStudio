@@ -14,7 +14,6 @@ import java.util.UUID;
 
 @Component
 public class ConversionToEntity implements IConversionToEntity {
-        //Converter<UserRegistrationDTO,UserEntity>
 
     @Override
     public UserEntity convertToEntity(UserRegistrationDTO userRegistrationDTO) {

@@ -1,10 +1,14 @@
 package by.it_academy.jd2.MJD29522.fitness.core.dto.food;
 
+import by.it_academy.jd2.MJD29522.fitness.validator.api.ValidString;
+import jakarta.validation.constraints.Positive;
+
 import java.util.Objects;
 import java.util.UUID;
 
 public class ProductWithUUID {
 
+    @ValidString
     private UUID uuid;
 
     public ProductWithUUID() {
