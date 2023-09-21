@@ -6,6 +6,9 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.errors.SingleErrorResponse;
 import by.it_academy.jd2.MJD29522.fitness.core.exception.ConversionTypeException;
 import by.it_academy.jd2.MJD29522.fitness.core.exception.InputSingleDataException;
 import by.it_academy.jd2.MJD29522.fitness.enums.ErrorCode;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Path;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -51,6 +54,21 @@ public class ExceptionGlobalHandler {
                 .body(errors);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<MultipleErrorResponse> handle(ConstraintViolationException e) {
+        List<LocalError> localErrors = new ArrayList<>();
+        for (ConstraintViolation<?> constraintViolation : e.getConstraintViolations()) {
+            String name = null;
+            for (Path.Node node : constraintViolation.getPropertyPath()) {
+                name = node.getName();
+            }
+            localErrors.add(new LocalError(name, constraintViolation.getMessage()));
+        }
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new MultipleErrorResponse(ErrorCode.STRUCTURED_ERROR, localErrors));
+    }
+
     @ExceptionHandler(value = {NullPointerException.class})
     public ResponseEntity<List<SingleErrorResponse>> handleNPE(IllegalArgumentException e){
         List<SingleErrorResponse> errors = new ArrayList<>();
@@ -59,17 +77,5 @@ public class ExceptionGlobalHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(errors);
     }
-
-//500
-//    @ExceptionHandler  //(value = {IllegalAccessException.class})
-//    public ResponseEntity<List<ErrorForSingleResponse>> handleAll(Throwable e) {
-//        List<ErrorForSingleResponse> errors = new ArrayList<>();
-//        errors.add(new ErrorForSingleResponse("error",
-//                "Сервер не смог корректно обработать запрос. Пожалуйста обратитесь к администратору"));
-//        return ResponseEntity
-//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body(errors);
-//           }
-
 
 }
