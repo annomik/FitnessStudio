@@ -9,6 +9,7 @@ import by.it_academy.jd2.MJD29522.fitness.enums.ErrorCode;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 @RestControllerAdvice
 public class ExceptionGlobalHandler {
 
@@ -27,13 +29,6 @@ public class ExceptionGlobalHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(List.of(new SingleErrorResponse(e.getErrorCode(), e.getMessage())));
-    }
-
-    @ExceptionHandler(value = {ConversionTypeException.class, Exception.class})
-    public ResponseEntity<List<SingleErrorResponse>> handleConversionTypeException(Exception e) {
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(List.of(new SingleErrorResponse(ErrorCode.ERROR, e.getMessage())));
     }
 
     @ExceptionHandler
@@ -47,11 +42,11 @@ public class ExceptionGlobalHandler {
 
     @ExceptionHandler
     public ResponseEntity<List<SingleErrorResponse>> handle(IllegalArgumentException e){
-        List<SingleErrorResponse> errors = new ArrayList<>();
-        errors.add(new SingleErrorResponse(ErrorCode.ERROR,  e.getMessage()));
+//        List<SingleErrorResponse> errors = new ArrayList<>();
+//        errors.add(new SingleErrorResponse(ErrorCode.ERROR,  e.getMessage()));
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(errors);
+                .body(List.of(new SingleErrorResponse(ErrorCode.ERROR,  e.getMessage())));
     }
 
     @ExceptionHandler
@@ -69,13 +64,22 @@ public class ExceptionGlobalHandler {
                 .body(new MultipleErrorResponse(ErrorCode.STRUCTURED_ERROR, localErrors));
     }
 
-    @ExceptionHandler(value = {NullPointerException.class})
-    public ResponseEntity<List<SingleErrorResponse>> handleNPE(IllegalArgumentException e){
-        List<SingleErrorResponse> errors = new ArrayList<>();
-        errors.add(new SingleErrorResponse(ErrorCode.ERROR,  e.getMessage()));
+    @ExceptionHandler(value = {ConversionTypeException.class, Exception.class})
+    public ResponseEntity<List<SingleErrorResponse>> handleConversionTypeException(Exception e) {
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(errors);
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(List.of(new SingleErrorResponse(ErrorCode.ERROR, e.getMessage())));
     }
+
+//    @ExceptionHandler(value = {NullPointerException.class})
+//    public ResponseEntity<List<SingleErrorResponse>> handleNPE(IllegalArgumentException e){
+//        List<SingleErrorResponse> errors = new ArrayList<>();
+//        errors.add(new SingleErrorResponse(ErrorCode.ERROR,  e.getMessage()));
+//        return ResponseEntity
+//                .status(HttpStatus.BAD_REQUEST)
+//                .body(errors);
+//    }
+
+
 
 }

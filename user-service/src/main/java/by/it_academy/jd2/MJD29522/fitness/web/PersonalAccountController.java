@@ -6,10 +6,12 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserRegistrationDTO;
 import by.it_academy.jd2.MJD29522.fitness.service.UserHolder;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IPersonalAccountService;
 import by.it_academy.jd2.MJD29522.fitness.web.utils.JwtTokenUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class PersonalAccountController {
@@ -17,12 +19,6 @@ public class PersonalAccountController {
     private final IPersonalAccountService service;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserHolder holder;
-
-    public PersonalAccountController(IPersonalAccountService service, JwtTokenUtil jwtTokenUtil, UserHolder holder) {
-        this.service = service;
-        this.jwtTokenUtil = jwtTokenUtil;
-        this.holder = holder;
-    }
 
     @RequestMapping(path = "/registration", method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody UserRegistrationDTO userRegistrationDTO) {
@@ -43,7 +39,6 @@ public class PersonalAccountController {
         return ResponseEntity.status(HttpStatus.OK).body(jwtTokenUtil.generateAccessToken(userDTO));
     }
 
-    //Получить информацию о себе
     @RequestMapping(path = "/me", method = RequestMethod.GET)
     public ResponseEntity<?> getCard(){
         return ResponseEntity.status(HttpStatus.OK).body(holder.getUser());

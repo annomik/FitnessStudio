@@ -6,6 +6,7 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IUserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Past;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final IUserService userService;
-
-    public UserController(IUserService userService) {
-        this.userService = userService;
-    }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addNewUser(@Valid @RequestBody UserCreateDTO userCreateDTO) {

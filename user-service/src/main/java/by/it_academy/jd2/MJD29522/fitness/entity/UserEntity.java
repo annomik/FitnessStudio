@@ -1,11 +1,15 @@
 package by.it_academy.jd2.MJD29522.fitness.entity;
 
 import jakarta.persistence.*;
-
+import lombok.*;
 import java.time.LocalDateTime;
-
 import java.util.UUID;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(schema = "fitness", name = "user")
 @SecondaryTable(schema = "fitness", name = "user_code",
@@ -56,23 +60,21 @@ public class UserEntity {
     )
     private RoleEntity roleEntity;
 
-    public UserEntity() {
-    }
 
     //UserRegistrationDTO
-    public UserEntity(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate,
-                      String mail, String fio, StatusEntity statusEntity, String password,
-                      String verificationCode, RoleEntity roleEntity) {
-        this.uuid = uuid;
-        this.dtCreate = dtCreate;
-        this.dtUpdate = dtUpdate;
-        this.mail = mail;
-        this.fio = fio;
-        this.statusEntity = statusEntity;
-        this.password = password;
-        this.verificationCode = verificationCode;
-        this.roleEntity = roleEntity;
-    }
+//    public UserEntity(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate,
+//                      String mail, String fio, StatusEntity statusEntity, String password,
+//                      String verificationCode, RoleEntity roleEntity) {
+//        this.uuid = uuid;
+//        this.dtCreate = dtCreate;
+//        this.dtUpdate = dtUpdate;
+//        this.mail = mail;
+//        this.fio = fio;
+//        this.statusEntity = statusEntity;
+//        this.password = password;
+//        this.verificationCode = verificationCode;
+//        this.roleEntity = roleEntity;
+//    }
 
     //UserCreateDTO
     public UserEntity(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate,
@@ -87,78 +89,4 @@ public class UserEntity {
         this.password = password;
         this.roleEntity = roleEntity;
     }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public LocalDateTime getDtCreate() {
-        return dtCreate;
-    }
-
-    public void setDtCreate(LocalDateTime dtCreate) {
-        this.dtCreate = dtCreate;
-    }
-
-    public LocalDateTime getDtUpdate() {
-        return dtUpdate;
-    }
-
-    public void setDtUpdate(LocalDateTime dtUpdate) {
-        this.dtUpdate = dtUpdate;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getFio() {
-        return fio;
-    }
-
-    public void setFio(String fio) {
-        this.fio = fio;
-    }
-
-    public StatusEntity getStatusEntity() {
-        return statusEntity;
-    }
-
-    public void setStatusEntity(StatusEntity statusEntity) {
-        this.statusEntity = statusEntity;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getVerificationCode() {
-        return verificationCode;
-    }
-
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
-    }
-
-    public RoleEntity getRoleEntity() {
-        return roleEntity;
-    }
-
-    public void setRoleEntity(RoleEntity roleEntity) {
-        this.roleEntity = roleEntity;
-    }
-
-
 }

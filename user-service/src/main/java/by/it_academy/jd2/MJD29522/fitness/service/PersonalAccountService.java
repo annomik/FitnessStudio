@@ -14,6 +14,7 @@ import by.it_academy.jd2.MJD29522.fitness.service.api.ISendingMailService;
 import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToEntity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Validated
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PersonalAccountService implements IPersonalAccountService {
 
@@ -35,19 +37,6 @@ public class PersonalAccountService implements IPersonalAccountService {
     private final String SUBJECT = "Activation in Fitness Studio";
     private final String MESSAGE = "Thank you for the registration in our application! \n " +
             "To successfully activate your account, please, enter your email address and this code: ";
-
-    public PersonalAccountService(IPersonalAccountRepository personalAccountRepository,
-                                  IConversionToEntity conversionToEntity,
-                                  ConversionService conversionService,
-                                  ISendingMailService mailService,
-                                  PasswordEncoder encoder
-    ) {
-        this.personalAccountRepository = personalAccountRepository;
-        this.conversionToEntity = conversionToEntity;
-        this.conversionService = conversionService;
-        this.mailService = mailService;
-        this.encoder = encoder;
-    }
 
     @Transactional
     @Override
