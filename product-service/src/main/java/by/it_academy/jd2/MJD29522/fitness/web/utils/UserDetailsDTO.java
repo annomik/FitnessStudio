@@ -1,5 +1,6 @@
 package by.it_academy.jd2.MJD29522.fitness.web.utils;
 
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,34 +9,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDetailsDTO implements UserDetails {
     private String fio;
     private String mail;
     private String role;
     private String uuid;
-
-    public UserDetailsDTO( String fio, String mail, String role, String uuid) {
-        this.fio = fio;
-        this.mail = mail;
-        this.role = role;
-        this.uuid = uuid;
-    }
-
-    public String getFio() {
-        return fio;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

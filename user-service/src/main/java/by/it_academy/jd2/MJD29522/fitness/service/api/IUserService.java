@@ -16,7 +16,7 @@ public interface IUserService {
 
     UserDTO getCard(UUID uuid);
 
-    void update(@ValidString UUID uuid, @NotNull LocalDateTime dtUpdate, @NotNull @Valid UserCreateDTO userCreateDTO);
+    void update(@NotNull UUID uuid, @NotNull LocalDateTime dtUpdate, @NotNull @Valid UserCreateDTO userCreateDTO);
 
     UserDTO getUserByMail(String mail);
 

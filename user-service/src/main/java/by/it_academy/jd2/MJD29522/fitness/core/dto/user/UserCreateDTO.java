@@ -19,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserCreateDTO {
 
-    private UUID uuid;
+  //  private UUID uuid;
     @NumberFormat
     private LocalDateTime dtCreate;
     private LocalDateTime dtUpdate;
@@ -29,7 +29,7 @@ public class UserCreateDTO {
     private String fio;
     @NotNull(message = "Valid values: USER, ADMIN")
     private UserRole role;
-    @ValidString(message = "Valid values: WAITING_ACTIVATION, ACTIVATED, DEACTIVATED")
+    @NotNull(message = "Valid values: WAITING_ACTIVATION, ACTIVATED, DEACTIVATED")
     private UserStatus status;
     @ValidString
     private String password;

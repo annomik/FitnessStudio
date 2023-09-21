@@ -56,7 +56,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void update(@ValidString UUID uuid, @NotNull LocalDateTime dtUpdate, @NotNull @Valid  UserCreateDTO userCreateDTO) {
+    public void update(@NotNull UUID uuid, @NotNull LocalDateTime dtUpdate, @NotNull @Valid  UserCreateDTO userCreateDTO) {
         Optional<UserEntity> userEntityFromDB = userRepository.findById(uuid);
         if (userEntityFromDB.isEmpty()) {
             throw new InputSingleDataException("User with id " + uuid + " for update not found.", ErrorCode.ERROR);
