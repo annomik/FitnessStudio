@@ -18,7 +18,7 @@ public interface IProductService {
 
     Optional<ProductEntity> findByUUID(UUID uuid);
 
-    void update(@ValidString UUID uuid,  @NotNull LocalDateTime dtUpdate, @NotNull @Valid ProductCreateDTO productCreateDTO);
+    void update(@NotNull UUID uuid,  @NotNull LocalDateTime dtUpdate, @NotNull @Valid ProductCreateDTO productCreateDTO);
 
     PageDTO<ProductDTO> getPage(int numberOfPage, int size);
 

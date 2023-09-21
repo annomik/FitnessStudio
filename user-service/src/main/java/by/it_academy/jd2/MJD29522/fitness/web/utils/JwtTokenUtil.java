@@ -3,21 +3,18 @@ package by.it_academy.jd2.MJD29522.fitness.web.utils;
 import by.it_academy.jd2.MJD29522.fitness.config.properties.JWTProperty;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.user.UserDTO;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+@RequiredArgsConstructor
 @Component
 public class JwtTokenUtil {
 
     private final JWTProperty property;
-
-    public JwtTokenUtil(JWTProperty property) {
-        this.property = property;
-    }
-
     public String generateAccessToken(UserDTO userDTO) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("fio", userDTO.getFio());

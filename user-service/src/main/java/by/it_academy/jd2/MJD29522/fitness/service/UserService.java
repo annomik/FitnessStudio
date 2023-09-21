@@ -15,6 +15,7 @@ import by.it_academy.jd2.MJD29522.fitness.service.converters.api.IConversionToEn
 import by.it_academy.jd2.MJD29522.fitness.validator.api.ValidString;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +31,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Validated
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService implements IUserService {
 
@@ -38,18 +40,6 @@ public class UserService implements IUserService {
     private final ConversionService conversionService;
     private final IConversionToEntity conversionToEntity;
     private final PasswordEncoder encoder;
-
-    public UserService(IUserRepository userRepository,
-                       IPersonalAccountService personalAccountService,
-                       ConversionService conversionService,
-                       IConversionToEntity conversionToEntity,
-                       PasswordEncoder encoder) {
-        this.userRepository = userRepository;
-        this.personalAccountService = personalAccountService;
-        this.conversionService = conversionService;
-        this.conversionToEntity = conversionToEntity;
-        this.encoder = encoder;
-    }
 
     @Transactional
     @Override
@@ -66,7 +56,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void update(@ValidString UUID uuid, @NotNull LocalDateTime dtUpdate, @NotNull @Valid  UserCreateDTO userCreateDTO) {
+    public void update(@NotNull UUID uuid, @NotNull LocalDateTime dtUpdate, @NotNull @Valid  UserCreateDTO userCreateDTO) {
         Optional<UserEntity> userEntityFromDB = userRepository.findById(uuid);
         if (userEntityFromDB.isEmpty()) {
             throw new InputSingleDataException("User with id " + uuid + " for update not found.", ErrorCode.ERROR);
