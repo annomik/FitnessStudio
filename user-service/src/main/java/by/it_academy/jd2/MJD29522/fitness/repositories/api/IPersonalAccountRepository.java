@@ -9,8 +9,6 @@ public interface IPersonalAccountRepository extends CrudRepository<UserEntity, U
 
     UserEntity findByMail(String mail);
 
-  //  long deleteByVerificationCode(String code);
-
 //    @Modifying
 //    @Query("delete from User user_code where user_code.code=:code")
 //    void deleteCode(@Param("code") String code);

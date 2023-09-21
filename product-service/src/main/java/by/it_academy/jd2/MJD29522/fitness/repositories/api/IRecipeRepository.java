@@ -9,5 +9,6 @@ import java.util.UUID;
 
 public interface IRecipeRepository extends ListCrudRepository<RecipeEntity, UUID> {
     Page<RecipeEntity> findAll(Pageable pageable);
-    RecipeEntity findByTitle(String title);
+   // RecipeEntity findByTitle(String title);
+    boolean existsByTitle(String title);
 }

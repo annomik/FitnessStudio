@@ -10,5 +10,7 @@ import java.util.UUID;
 public interface IProductRepository extends ListCrudRepository<ProductEntity, UUID> {
 
     Page<ProductEntity> findAll(Pageable pageable);
-    ProductEntity findByTitle(String title);
+   // ProductEntity findByTitle(String title);
+
+    boolean existsByTitle(String title);
 }
