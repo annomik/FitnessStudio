@@ -4,6 +4,7 @@ import by.it_academy.jd2.MJD29522.fitness.core.dto.PageDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeCreateDTO;
 import by.it_academy.jd2.MJD29522.fitness.core.dto.food.RecipeDTO;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IRecipeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/recipe")
 public class RecipeController {
     private final IRecipeService recipeService;
-
-    public RecipeController(IRecipeService recipeService) {
-        this.recipeService = recipeService;
-    }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> addNewRecipe(@RequestBody RecipeCreateDTO recipeCreateDTO) {

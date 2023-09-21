@@ -2,16 +2,14 @@ package by.it_academy.jd2.MJD29522.fitness.web.utils;
 
 import by.it_academy.jd2.MJD29522.fitness.config.properites.JWTProperty;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.Date;
 
+@RequiredArgsConstructor
 @Component
 public class JwtTokenUtil {
     private final JWTProperty property;
-
-    public JwtTokenUtil(JWTProperty property) {
-        this.property = property;
-    }
 
     public UserDetailsDTO getUser(String token) {
         return new UserDetailsDTO(getUsername(token), getUserMail(token), getUserRole(token), getUserUUDI(token));

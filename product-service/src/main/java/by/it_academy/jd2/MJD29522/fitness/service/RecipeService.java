@@ -12,6 +12,7 @@ import by.it_academy.jd2.MJD29522.fitness.service.api.IProductService;
 import by.it_academy.jd2.MJD29522.fitness.service.api.IRecipeService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,28 +27,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class RecipeService implements IRecipeService {
     private final IRecipeRepository recipeRepository;
     private final IProductService productService;
     private final ConversionService conversionService;
 
-    public RecipeService(IRecipeRepository recipeRepository,
-                         IProductService productService,
-                         ConversionService conversionService) {
-        this.recipeRepository = recipeRepository;
-        this.productService = productService;
-        this.conversionService = conversionService;
-    }
-
     @Transactional
     @Override
     public void addNewRecipe(@NotNull @Valid RecipeCreateDTO recipeCreateDTO) {
-       // RecipeEntity recipeByTitle = recipeRepository.findByTitle();
         if (recipeRepository.existsByTitle(recipeCreateDTO.getTitle()) ) {
             throw new InputSingleDataException("A recipe with the same name already exists.", ErrorCode.ERROR);
         }
-      //  validate(recipeCreateDTO);
         LocalDateTime dtCreate = LocalDateTime.now(); //.withNano(3);
         List<CompositionDTO> compositionList = recipeCreateDTO.getComposition();
         List<CompositionEntity> compositionEntityList = new ArrayList<>();
@@ -71,7 +63,6 @@ public class RecipeService implements IRecipeService {
     @Transactional
     @Override
     public void update(@NotNull UUID uuid,@NotNull LocalDateTime dtUpdate, @NotNull @Valid RecipeCreateDTO recipeCreateDTO) {
-         //   validate(recipeCreateDTO);
         Optional<RecipeEntity> findEntity = recipeRepository.findById(uuid);
         if (!findEntity.isPresent()) {
             throw new InputSingleDataException("A recipe with id " + uuid + " for update not found!", ErrorCode.ERROR);

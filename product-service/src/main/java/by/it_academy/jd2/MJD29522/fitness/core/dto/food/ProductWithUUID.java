@@ -1,44 +1,18 @@
 package by.it_academy.jd2.MJD29522.fitness.core.dto.food;
 
 import by.it_academy.jd2.MJD29522.fitness.validator.api.ValidString;
-import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Objects;
 import java.util.UUID;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductWithUUID {
 
-    @ValidString
+  //  @ValidString
     private UUID uuid;
 
-    public ProductWithUUID() {
-    }
-
-    public ProductWithUUID(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProductWithUUID that = (ProductWithUUID) o;
-        return Objects.equals(uuid, that.uuid);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uuid);
-    }
-
-    @Override
-    public String toString() {
-        return "ProductWithUUID{" +
-                "uuid=" + uuid +
-                '}';
-    }
 }

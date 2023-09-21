@@ -11,6 +11,7 @@ import by.it_academy.jd2.MJD29522.fitness.service.api.IProductService;
 import by.it_academy.jd2.MJD29522.fitness.validator.api.ValidString;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,16 +25,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Validated
 @Transactional(readOnly = true)
 public class ProductService implements IProductService {
     private final IProductRepository productRepository;
     private final ConversionService conversionService;
-
-    public ProductService(IProductRepository productRepository, ConversionService conversionService) {
-        this.productRepository = productRepository;
-        this.conversionService = conversionService;
-    }
 
     @Transactional
     @Override
@@ -52,7 +49,7 @@ public class ProductService implements IProductService {
 
     @Transactional
     @Override
-    public void update(@ValidString UUID uuid, @NotNull LocalDateTime dtUpdate, @NotNull @Valid  ProductCreateDTO productCreateDTO) {
+    public void update(@NotNull UUID uuid, @NotNull LocalDateTime dtUpdate, @NotNull @Valid  ProductCreateDTO productCreateDTO) {
         Optional<ProductEntity> findEntity = productRepository.findById(uuid);
         if (!findEntity.isPresent()) {
             throw new InputSingleDataException("The product with id " + uuid + " for update not found.", ErrorCode.ERROR);
@@ -92,7 +89,7 @@ public class ProductService implements IProductService {
                 content );
     }
 
-    public void validate(ProductCreateDTO productCreateDTO)  {//
+    public void validate(ProductCreateDTO productCreateDTO)  {
 //
 //        if (productCreateDTO.getTitle() == null || productCreateDTO.getTitle().isBlank()){
 //            multipleErrorResponse.setErrors(new Error("Title", "The field is not filled."));
